@@ -1,8 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
 
+  useEffect(() => {
+    getModels()
+  }, [])
+
   const [input, setInput] = useState("")
+  const [models, setModels] = useState([])
+  const [currentModel, setCurrentModel] = useState("ada")
   const [chatLog, setChatLog] = useState([{
     user: "gpt",
     message: "how can I help you today?"
@@ -13,6 +19,12 @@ function App() {
 
   function clearChat () {
     setChatLog([])
+  }
+
+  async function getModels () {
+    fetch(`http://localhost:5000/models`)
+      .then(res => res.json())
+      .then(data => setModels(data.models.data))
   }
 
   async function handleSubmit(e) {
@@ -27,7 +39,8 @@ function App() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: messages
+        message: messages,
+        currentModel,
       })
     })
     const data = await response.json();
@@ -52,7 +65,16 @@ function App() {
         className='chat-input-textarea'>
         </input>
       </form>
-      <button onClick={clearChat}>Effacer le chat</button>
+      <button onClick={clearChat}>Réinitialiser</button>
+      <div className='models'>
+        <select onChange={(e) => {
+          setCurrentModel(e.target.value)
+        }}>
+        {models.map((model, index) => (
+            <option key={model.id} value={model.id}>{model.id}</option>
+          ))}
+        </select>
+      </div>
     </div>
   )
 }

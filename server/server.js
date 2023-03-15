@@ -14,12 +14,20 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cors())
 
-app.post("/", async (req, res) => {
-    const openai = openAIFactory.create()
-    const { message } = req.body
+const openai = openAIFactory.create()
+
+app.get("/models", async (req, res) => {
     
     res.json({
-        message: await openai.callApi(message),
+        models: (await openai.api.listModels()).data
+    })
+})
+
+app.post("/", async (req, res) => {
+    const { message, currentModel } = req.body
+    
+    res.json({
+        message: await openai.callApi(message, currentModel),
     })
 })
 

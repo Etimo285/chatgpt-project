@@ -1,0 +1,142 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "MultiGPT",
+    "description": "ChatGPT but many of them",
+    "contact": {
+      "email": "etienneruynat@gmail.com / sylvain.dev@gmail.com"
+    },
+    "version": "1.0"
+  },
+  "externalDocs": {
+    "description": "ChatGPT but many of them",
+    "url": "https://github.com/Etimo285/chatgpt-project"
+  },
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authentification"
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Register a new json web token",
+        "description": "This is so fun",
+        "operationId": "translate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "description": "the sentence to translate",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "required": [
+                  "username"
+                ],
+                "properties": {
+                  "sentence": {
+                    "$ref": "#/components/schemas/username"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "token"
+                  ],
+                  "properties": {
+                    "token": {
+                      "schema": {
+                        "$ref": "#/components/schemas/token"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/models": {
+      "get": {
+        "security": {
+          "bearerAuth": []
+        },
+        "tags": [
+          "fetch"
+        ],
+        "summary": "List of models of ChatGPT",
+        "description": "This is so fun",
+        "operationId": "models",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "models"
+                  ],
+                  "properties": {
+                    "models": {
+                      "schema": {
+                        "$ref": "#/components/schemas/models"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "username": {
+        "type": "string",
+        "description": "The username of the user",
+        "example": "Dr. Nul-Nul"
+      },
+      "token": {
+        "type": "string",
+        "description": "The JWT token"
+      },
+      "models": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        },
+        "description": "List of models"
+      }
+    }
+  }
+}

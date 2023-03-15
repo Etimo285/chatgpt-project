@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import './App.css'
 
 function App() {
 
@@ -9,13 +10,7 @@ function App() {
   const [input, setInput] = useState("")
   const [models, setModels] = useState([])
   const [currentModel, setCurrentModel] = useState("ada")
-  const [chatLog, setChatLog] = useState([{
-    user: "gpt",
-    message: "how can I help you today?"
-  },{
-    user: "me",
-    message: "I want to use chatgpt today"
-  }])
+  const [chatLog, setChatLog] = useState([])
 
   function clearChat () {
     setChatLog([])
@@ -49,15 +44,11 @@ function App() {
   }
 
   return (
-    <div style={{ margin: '10px' }}>
-      <section className='chatbox' style={{ width: '50vw' }}>
-        <div className='chat-log'>
-          {chatLog.map((message, index) => (
-            <ChatMessage key={index} message={message} />
-          ))}
-        </div>
-
-      </section>
+    <div className='main' style={{ margin: '10px' }}>
+      <div className='logs'>
+        <ChatLog chatLog={chatLog} className='chatbox' />
+        <ChatLog chatLog={chatLog} className='chatbox' />
+      </div>
       <form onSubmit={handleSubmit}>
         <input rows="1"
         value={input}
@@ -71,7 +62,10 @@ function App() {
           setCurrentModel(e.target.value)
         }}>
         {models.map((model, index) => (
+            model.id === "text-davinci-003" ?
+            <option key={model.id} value={model.id} selected>{model.id}</option> :
             <option key={model.id} value={model.id}>{model.id}</option>
+            
           ))}
         </select>
       </div>
@@ -79,13 +73,23 @@ function App() {
   )
 }
 
-const ChatMessage = ({ message }) => {
+const ChatLog = ({ chatLog }) => {
   return (
-    <div className='chat-message' style={{ display: "flex", justifyContent: "space-between" }}>
+    <div className='chat-log'>
+        {chatLog.map((message, index) => (
+          <ChatMessage index={index} key={index} message={message} />
+        ))}
+    </div>
+  )
+}
+
+const ChatMessage = ({ message, index }) => {
+  return (
+    <div className='chat-message'>
       <div className='author'>
-        <span style={{ fontWeight: 'bold' }}>{message.user + " :"}</span>
+        <span>{message.user + " :"}</span>
       </div>
-      <div className='message' style={{ maxWidth: '90%' }}>
+      <div className='message'>
         {message.message}
       </div>
     </div>

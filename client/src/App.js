@@ -47,7 +47,6 @@ function App() {
     <div className='main' style={{ margin: '10px' }}>
       <div className='logs'>
         <ChatLog chatLog={chatLog} className='chatbox' />
-        <ChatLog chatLog={chatLog} className='chatbox' />
       </div>
       <form onSubmit={handleSubmit}>
         <input rows="1"

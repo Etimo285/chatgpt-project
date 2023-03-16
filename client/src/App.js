@@ -35,7 +35,9 @@ function App() {
       <section className='chatBox'>
         <h1>Chat</h1>
 
-        <div className='chatLog'>
+        <div className='chatLog'>      
+
+          <ChatMessage message={{user: 'gpt', message: 'Hello, how can I help you today ?'}} />
         
           {chatLog.map((message, index)=>(
             <ChatMessage key={index} message={message} />

@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react'
 
 function App() {
 
-  const [input, setInput] = useState("");
-  const [chatLog, setChatLog] = useState([]);
+  const [input, setInput] = useState("")
+  const [chatLog, setChatLog] = useState([])
 
   async function handleSubmit(e){
-    e.preventDefault();
+    e.preventDefault()
     let chatLogRefresh =([...chatLog, {user: "me", message: `${input}`} ])
-    setInput("");
-    setChatLog(chatLogRefresh);
+    setInput("")
+    setChatLog(chatLogRefresh)
 
     const response = await fetch("http://localhost:3080/", {
       method: "POST",
@@ -19,11 +19,11 @@ function App() {
       body: JSON.stringify({
         message: chatLogRefresh.map((message)=> message.message).join("\n")
       })
-    });
+    })
 
-    const data = await response.json();
-    setChatLog([...chatLogRefresh, {user: "gpt", message: `${data.GPTresponse}`}]);
-  };
+    const data = await response.json()
+    setChatLog([...chatLogRefresh, {user: "gpt", message: `${data.GPTresponse}`}])
+  }
 
   return (
     <div className='app'>

@@ -4,10 +4,11 @@ function App() {
 
   const [input, setInput] = useState("")
   const [chatLog, setChatLog] = useState([])
+  const [currentPrice,setCurrentPrice] = useState([]) 
 
   async function handleSubmit(e){
     e.preventDefault()
-    let chatLogRefresh =([...chatLog, {user: "me", message: `${input}`} ])
+    let chatLogRefresh =([...chatLog, {role: "user", content: `${input}`} ])
     setInput("")
     setChatLog(chatLogRefresh)
 
@@ -17,12 +18,19 @@ function App() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: chatLogRefresh.map((message)=> message.message).join("\n")
+        messages: chatLogRefresh
       })
     })
 
     const data = await response.json()
-    setChatLog([...chatLogRefresh, {user: "gpt", message: `${data.GPTresponse}`}])
+
+    setCurrentPrice({
+      promptPrice:data.Price.prompt_tokens, 
+      responsePrice:data.Price.completion_tokens,
+      total:data.Price.total_tokens
+    })
+
+    setChatLog([...chatLogRefresh, {role: "assistant", content: `${data.GPTresponse}`}])
   }
 
   return (
@@ -30,6 +38,16 @@ function App() {
 
       <aside className='aside'>
         <h1>Aside</h1>
+
+        <div className='tokenPrice'>
+          <div>Current prompt price: </div>
+          <ul>
+            <li>prompt price : {currentPrice.promptPrice} tokens</li>
+            <li>response price : {currentPrice.responsePrice} tokens</li>
+            <li>total : {currentPrice.total} tokens</li>
+          </ul>
+        </div>
+          
       </aside>
 
       <section className='chatBox'>
@@ -37,7 +55,7 @@ function App() {
 
         <div className='chatLog'>      
 
-          <ChatMessage message={{user: 'gpt', message: 'Hello, how can I help you today ?'}} />
+          <ChatMessage message={{role: 'assistant', content: 'Hello, how can I help you today ?'}} />
         
           {chatLog.map((message, index)=>(
             <ChatMessage key={index} message={message} />
@@ -46,7 +64,7 @@ function App() {
         
         <div className='chat-input-box'>
           <form onSubmit={handleSubmit}>
-            <input className='chat-input' value={input} onChange={(e)=> setInput(e.target.value)} rows='1'></input>
+            <input className='chat-input' value={input} onChange={(e)=> setInput(e.target.value)}></input>
           </form>
         </div>
       </section>
@@ -56,9 +74,9 @@ function App() {
 
 const ChatMessage = ({message})=>{
   return (
-    <div className={`chatMessage ${message.user === "gpt" && "chatGPT"} `}>
-      <div className={`avatar ${message.user === "gpt" && "chatGPT"} `}>
-        {message.user === "gpt" && <svg
+    <div className={`chatMessage ${message.role === "assistant" && "chatGPT"} `}>
+      <div className={`avatar ${message.role === "assistant" && "chatGPT"} `}>
+        {message.role === "assistant" && <svg
           width={41}
           height={41}
           fill="none"
@@ -74,7 +92,7 @@ const ChatMessage = ({message})=>{
       </div>
 
       <div className='message'>
-        {message.message}
+        {message.content}
       </div>
     </div>
   )

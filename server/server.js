@@ -18,20 +18,19 @@ const openai = new OpenAIApi(configuration)
 
 app.post('/', async (req, res)=>{
 
-    const {message} = req.body
-    console.log(message)
-
-    const response = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt : `${message}`,
+    const { message } = req.body
+    
+    const response = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: message }],
         temperature: 0.5,
         max_tokens: 100,
     })
 
     res.json({
-        GPTresponse: response.data.choices[0].text,
+        GPTresponse: response.data.choices[0].message.content,
     })
-    
+
 })
 
 app.listen(port, () => {

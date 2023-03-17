@@ -4,7 +4,15 @@ function App() {
 
   const [input, setInput] = useState("")
   const [chatLog, setChatLog] = useState([])
-  const [currentPrice,setCurrentPrice] = useState([]) 
+  const [currentPrice,setCurrentPrice] = useState([
+    {priceType: "current"}, {prices:
+      [{numberType: "promptPrice", value: 0}, 
+      {numberType: "responsePrice", value: 0},
+      {numberType: "total" ,value: 0}]
+    }
+  
+  ]) 
+  let totalPrice 
 
   async function handleSubmit(e){
     e.preventDefault()
@@ -24,11 +32,16 @@ function App() {
 
     const data = await response.json()
 
-    setCurrentPrice({
-      promptPrice:data.Price.prompt_tokens, 
-      responsePrice:data.Price.completion_tokens,
-      total:data.Price.total_tokens
-    })
+    setCurrentPrice([
+      {priceType: "current"},{prices: 
+        [{numberType: "prompt price", value:data.Price.prompt_tokens}, 
+        {numberType: "response price", value:data.Price.completion_tokens},
+        {numberType: "total" ,value:data.Price.total_tokens}]
+      }
+      
+    ])
+
+    console.log(currentPrice)
 
     setChatLog([...chatLogRefresh, {role: "assistant", content: `${data.GPTresponse}`}])
   }
@@ -38,15 +51,8 @@ function App() {
 
       <aside className='aside'>
         <h1>Aside</h1>
-
-        <div className='tokenPrice'>
-          <div>Current prompt price: </div>
-          <ul>
-            <li>prompt price : {currentPrice.promptPrice} tokens</li>
-            <li>response price : {currentPrice.responsePrice} tokens</li>
-            <li>total : {currentPrice.total} tokens</li>
-          </ul>
-        </div>
+        
+        <TokenPrice priceInfos={currentPrice} />
           
       </aside>
 
@@ -94,6 +100,19 @@ const ChatMessage = ({message})=>{
       <div className='message'>
         {message.content}
       </div>
+    </div>
+  )
+}
+
+const TokenPrice = ({priceInfos})=> {
+  
+  return (
+    <div className='tokenPrice'>
+          <div>{priceInfos.priceType === "current" ? "Current prompt price" : "Total prompts price"}</div>
+          
+          <ul>
+            {priceInfos[1].prices.map((price, index)=> <li key={index}>{price.numberType} : {price.value}</li>)}
+          </ul>
     </div>
   )
 }

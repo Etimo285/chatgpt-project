@@ -16,27 +16,40 @@ const configuration = new Configuration({
 })
 const openai = new OpenAIApi(configuration)
 
-app.post('/', async (req, res)=>{
 
-    const { messages } = req.body
 
-    console.log(messages)
-    
-    const response = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: messages,
-        temperature: 0.5,
-        max_tokens: 100,
-    })
+app.post('/', async (req, res) => {
+
+    const { messages, model } = req.body
+
+    let response
+    let errMessage
+
+    if (model === "gpt-3.5-turbo") {
+        response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: messages,
+            temperature: 0.5,
+            max_tokens: 100,
+        }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
+    } else {
+        response = await openai.createCompletion({
+            model: model,
+            prompt: messages.content,
+            temperature: 0.5,
+            max_tokens: 100,
+        }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
+    }  
 
     res.json({
-        GPTresponse: response.data.choices[0].message.content,
-        Price : response.data.usage,
+        GPTresponse: model === "gpt-3.5-turbo" ? 
+            response.data.choices[0].message.content :
+            response.data.choices[0].text,
+        ErrorResponse: errMessage,
+        Price: response.data.usage,
     })
-
 })
 
 app.listen(port, () => {
-    
     console.log(`Server is running on port ${port}`)
 })

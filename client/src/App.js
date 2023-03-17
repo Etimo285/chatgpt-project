@@ -5,7 +5,8 @@ function App() {
 
   const [input, setInput] = useState("")
   const [chatLog, setChatLog] = useState([])
-  const [currentPrice,setCurrentPrice] = useState([]) 
+  const [currentPrice, setCurrentPrice] = useState([])
+  const [model, setModel] = useState("gpt-3.5-turbo")
 
   async function handleSubmit(e){
     e.preventDefault()
@@ -19,48 +20,60 @@ function App() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        messages: chatLogRefresh
+        messages: chatLogRefresh,
+        model: model
       })
     })
 
     const data = await response.json()
 
     setCurrentPrice({
-      promptPrice:data.Price.prompt_tokens, 
-      responsePrice:data.Price.completion_tokens,
-      total:data.Price.total_tokens
+      promptPrice: data.Price.prompt_tokens, 
+      responsePrice: data.Price.completion_tokens,
+      total: data.Price.total_tokens
     })
 
-    setChatLog([...chatLogRefresh, {role: "assistant", content: `${data.GPTresponse}`}])
+    setChatLog([...chatLogRefresh, { role: "assistant", content: `${data.GPTresponse}` }])
   }
 
   return (
     <div className='app'>
 
       <aside className='aside'>
+      <div className='models-list'>
+          <select className='models-selector' defaultValue="gpt-3.5-turbo" onChange={(e) => {
+            setModel(e.target.value)
+            }}>
+            <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+            <option value="code-davinci-002">code-davinci-002</option>
+            <option value="ada">ada</option>
+          </select>
+        </div>
+        
         <h1>Aside</h1>
 
         <div className='tokenPrice'>
           <div>Current prompt price: </div>
           <ul>
-            <li>prompt price : {currentPrice.promptPrice} tokens</li>
-            <li>response price : {currentPrice.responsePrice} tokens</li>
-            <li>total : {currentPrice.total} tokens</li>
+            <li>prompt price : { currentPrice.promptPrice } tokens</li>
+            <li>response price : { currentPrice.responsePrice } tokens</li>
+            <li>total : { currentPrice.total } tokens</li>
           </ul>
         </div>
-          
       </aside>
 
       <section className='chatBox'>
         <h1>Chat</h1>
+        
 
         <div className='chatLog'>      
 
-          <ChatMessage message={{role: 'assistant', content: 'Hello, how can I help you today ?'}} />
+          <ChatMessage message={{ role: 'assistant', content: 'Hello, how can I help you today ?' }} />
         
           {chatLog.map((message, index)=>(
             <ChatMessage key={index} message={message} />
           ))}
+
         </div>
         
         <div className='chat-input-box'>

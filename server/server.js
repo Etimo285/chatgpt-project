@@ -16,27 +16,27 @@ const configuration = new Configuration({
 })
 const openai = new OpenAIApi(configuration)
 
-
-
 app.post('/', async (req, res) => {
 
-    const { messages, model } = req.body
+    const { messages, model, temperature } = req.body
 
     let response
     let errMessage
 
-    if (model === "gpt-3.5-turbo") {
+    console.log(temperature)
+
+    if (model.includes("3.5")) {
         response = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages: messages,
-            temperature: 0.5,
+            temperature: parseInt(temperature),
             max_tokens: 100,
         }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
     } else {
         response = await openai.createCompletion({
             model: model,
             prompt: messages.content,
-            temperature: 0.5,
+            temperature: parseInt(temperature),
             max_tokens: 100,
         }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
     }  

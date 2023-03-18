@@ -13,14 +13,14 @@ function App() {
     
     })
   const [model, setModel] = useState("gpt-3.5-turbo")
+  const [temperature, setTemperature] = useState(0.5)
 
-    const [totalPrice,setTotalPrice] = useState({
-      priceType: "total", prices:
-        [{numberType: "prompt price", value: 0}, 
-        {numberType: "response price", value: 0},
-        {numberType: "total" ,value: 0}]
-      
-      })
+  const [totalPrice,setTotalPrice] = useState({
+    priceType: "total", prices:
+      [{numberType: "prompt price", value: 0}, 
+      {numberType: "response price", value: 0},
+      {numberType: "total" ,value: 0}]
+    })
   
   
   useEffect(() => {
@@ -48,7 +48,8 @@ function App() {
       },
       body: JSON.stringify({
         messages: chatLogRefresh,
-        model: model
+        model: model,
+        temperature: temperature
       })
     })
 
@@ -83,7 +84,22 @@ function App() {
         
         <TokenPrice priceInfos={currentPrice} />
         <TokenPrice priceInfos={totalPrice} />
-          
+
+        <div className='temperature'>
+
+          <div className='temperature-header'>
+            Temperature : <span>{temperature}</span>
+          </div>
+
+          <div className="temperature-slider">
+            <input type="range" step="0.01" min="0" max="1"
+            className="slider"
+            value={temperature}
+            onChange={(e) => { setTemperature(e.target.value) }}>
+            </input>
+          </div>
+        </div>
+
       </aside>
 
       <section className='chatBox'>

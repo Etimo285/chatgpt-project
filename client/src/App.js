@@ -3,6 +3,7 @@ import './App.css'
 
 function App() {
 
+  const [model, setModel] = useState("gpt-3.5-turbo")
   const [input, setInput] = useState("")
   const [chatLog, setChatLog] = useState([])
   const [currentPrice,  setCurrentPrice] = useState({
@@ -12,16 +13,14 @@ function App() {
       {numberType: "total" ,value: 0}]
     
     })
-  const [model, setModel] = useState("gpt-3.5-turbo")
 
-    const [totalPrice,setTotalPrice] = useState({
-      priceType: "total", prices:
-        [{numberType: "prompt price", value: 0}, 
-        {numberType: "response price", value: 0},
-        {numberType: "total" ,value: 0}]
-      
-      })
-  
+  const [totalPrice,setTotalPrice] = useState({
+    priceType: "total", prices:
+      [{numberType: "prompt price", value: 0}, 
+      {numberType: "response price", value: 0},
+      {numberType: "total" ,value: 0}]
+    
+    })
   
   useEffect(() => {
     setTotalPrice({
@@ -50,7 +49,7 @@ function App() {
         messages: chatLogRefresh,
         model: model
       })
-    })
+    }).then(setChatLog([...chatLogRefresh, {role: "assistant", isWaiting: true} ]))
 
     const data = await response.json()
 
@@ -63,6 +62,7 @@ function App() {
       })
 
     setChatLog([...chatLogRefresh, { role: "assistant", content: `${data.GPTresponse}` }])
+    
   }
 
   return (
@@ -130,7 +130,8 @@ const ChatMessage = ({message})=>{
       </div>
 
       <div className='message'>
-        {message.content}
+         <div className='dot-typing'></div>
+        
       </div>
     </div>
   )

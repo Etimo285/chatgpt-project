@@ -1,28 +1,29 @@
 import { useState, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMicrophone } from '@fortawesome/free-solid-svg-icons'
+import { faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
 function App() {
 
   const [input, setInput] = useState("")
+  const [vocalInput, setVocalInput] = useState({ isActive: false, icon: faMicrophoneSlash })
   const [chatLog, setChatLog] = useState([])
   const [currentPrice,  setCurrentPrice] = useState({
     priceType: "current", prices:
       [{numberType: "prompt price", value: 0}, 
       {numberType: "response price", value: 0},
       {numberType: "total" ,value: 0}]
-    
     })
-  const [model, setModel] = useState("gpt-3.5-turbo")
-  const [temperature, setTemperature] = useState(0.5)
-  const [maxTokens, setMaxTokens] = useState(100)
-
   const [totalPrice,setTotalPrice] = useState({
     priceType: "total", prices:
       [{numberType: "prompt price", value: 0}, 
       {numberType: "response price", value: 0},
       {numberType: "total" ,value: 0}]
     })
-  
+  const [model, setModel] = useState("gpt-3.5-turbo")
+  const [temperature, setTemperature] = useState(0.5)
+  const [maxTokens, setMaxTokens] = useState(100)
   
   useEffect(() => {
     setTotalPrice({
@@ -94,7 +95,11 @@ function App() {
             Temperature : 
             <input type="number" step="0.01" min="0" max="1"
               value={temperature}
-              onChange={(e) => { setTemperature(parseFloat(e.target.value)) }}>
+              onChange={(e) => {
+                if (e.target.value >= 1) e.target.value = 1
+                if (e.target.value <= 0) e.target.value = 0
+                setTemperature(parseFloat(e.target.value)) 
+                }}>
             </input>
           </div>
           <div className="temperature-slider">
@@ -113,7 +118,11 @@ function App() {
             Max Tokens :
             <input type="number" step="1" min="1" max="200"
               value={maxTokens}
-              onChange={(e) => { setMaxTokens(parseInt(e.target.value)) }}>
+              onChange={(e) => {
+                if (e.target.value >= 200) e.target.value = 200
+                if (e.target.value <= 1) e.target.value = 1
+                setMaxTokens(parseInt(e.target.value))
+                }}>
             </input>
           </div>
 
@@ -134,7 +143,6 @@ function App() {
 
       <section className='chatBox'>
         <h1>Chat</h1>
-        
 
         <div className='chatLog'>      
 
@@ -147,9 +155,18 @@ function App() {
         </div>
         
         <div className='chat-input-box'>
+        <button onClick={() => {
+            vocalInput.isActive ?
+            setVocalInput({ isActive: false, icon: faMicrophone }) :
+            setVocalInput({ isActive: true, icon: faMicrophoneSlash })
+            console.log(vocalInput) }}
+          >
+          <FontAwesomeIcon icon={vocalInput.icon} />
+          </button>
           <form onSubmit={handleSubmit}>
             <input className='chat-input' value={input} onChange={(e)=> setInput(e.target.value)}></input>
           </form>
+            
         </div>
       </section>
     </div>

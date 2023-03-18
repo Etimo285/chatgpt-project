@@ -29,14 +29,14 @@ app.post('/', async (req, res) => {
         response = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages: messages,
-            temperature: parseInt(temperature),
+            temperature: temperature,
             max_tokens: 100,
         }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
     } else {
         response = await openai.createCompletion({
             model: model,
             prompt: messages.content,
-            temperature: parseInt(temperature),
+            temperature: temperature,
             max_tokens: 100,
         }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
     }  

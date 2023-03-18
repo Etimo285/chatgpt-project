@@ -14,6 +14,7 @@ function App() {
     })
   const [model, setModel] = useState("gpt-3.5-turbo")
   const [temperature, setTemperature] = useState(0.5)
+  const [maxTokens, setMaxTokens] = useState(100)
 
   const [totalPrice,setTotalPrice] = useState({
     priceType: "total", prices:
@@ -49,7 +50,8 @@ function App() {
       body: JSON.stringify({
         messages: chatLogRefresh,
         model: model,
-        temperature: temperature
+        temperature: temperature,
+        maxTokens: maxTokens
       })
     })
 
@@ -70,6 +72,7 @@ function App() {
     <div className='app'>
 
       <aside className='aside'>
+
       <div className='models-list'>
           <select className='models-selector' defaultValue="gpt-3.5-turbo" onChange={(e) => {
             setModel(e.target.value)
@@ -88,9 +91,12 @@ function App() {
         <div className='temperature'>
 
           <div className='temperature-header'>
-            Temperature : <span>{temperature}</span>
+            Temperature : 
+            <input type="number" step="0.01" min="0" max="1"
+              value={temperature}
+              onChange={(e) => { setTemperature(parseFloat(e.target.value)) }}>
+            </input>
           </div>
-
           <div className="temperature-slider">
             <input type="range" step="0.01" min="0" max="1"
             className="slider"
@@ -98,6 +104,30 @@ function App() {
             onChange={(e) => { setTemperature(parseFloat(e.target.value)) }}>
             </input>
           </div>
+
+        </div>
+
+        <div className='max-tokens'>
+          
+          <div className='max-tokens-header'>
+            Max Tokens :
+            <input type="number" step="1" min="1" max="200"
+              value={maxTokens}
+              onChange={(e) => { setMaxTokens(parseInt(e.target.value)) }}>
+            </input>
+          </div>
+
+          <div className="max-tokens-slider">
+            <form>
+              
+              <input type="range" step="1" min="1" max="200"
+                className="slider"
+                value={maxTokens}
+                onChange={(e) => { setMaxTokens(parseInt(e.target.value)) }}>
+              </input>
+            </form>
+          </div>
+
         </div>
 
       </aside>

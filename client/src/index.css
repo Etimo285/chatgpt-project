@@ -120,18 +120,24 @@ code {
   border: none;
 }
 
-/* Temperature Slider */
+/* Temperature && Max Tokens Slider */
 
-.temperature {
+.temperature, .max-tokens {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 15px;
 }
 
-.temperature-slider {
+.temperature-slider, .max-tokens-slider {
   margin-top: 10px;
   width: 100%;
+}
+
+.temperature-header>input, .max-tokens-header>input {
+  width: 3rem;
+  margin-left: 10px;
 }
 
 .slider {

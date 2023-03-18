@@ -5,10 +5,37 @@ function App() {
 
   const [input, setInput] = useState("")
   const [chatLog, setChatLog] = useState([])
-  const [currentPrice, setCurrentPrice] = useState([])
+  const [currentPrice,  setCurrentPrice] = useState({
+    priceType: "current", prices:
+      [{numberType: "prompt price", value: 0}, 
+      {numberType: "response price", value: 0},
+      {numberType: "total" ,value: 0}]
+    
+    })
   const [model, setModel] = useState("gpt-3.5-turbo")
 
+    const [totalPrice,setTotalPrice] = useState({
+      priceType: "total", prices:
+        [{numberType: "prompt price", value: 0}, 
+        {numberType: "response price", value: 0},
+        {numberType: "total" ,value: 0}]
+      
+      })
+  
+  
+  useEffect(() => {
+    setTotalPrice({
+        priceType: "total" , 
+        prices: [
+          { numberType: "prompt price", value: currentPrice.prices[0].value + totalPrice.prices[0].value },
+          { numberType: "response price", value: currentPrice.prices[1].value + totalPrice.prices[1].value },
+          { numberType: "total", value: currentPrice.prices[2].value + totalPrice.prices[2].value }
+        ]
+    })
+  }, [currentPrice]);
+
   async function handleSubmit(e){
+
     e.preventDefault()
     let chatLogRefresh =([...chatLog, {role: "user", content: `${input}`} ])
     setInput("")
@@ -28,10 +55,12 @@ function App() {
     const data = await response.json()
 
     setCurrentPrice({
-      promptPrice: data.Price.prompt_tokens, 
-      responsePrice: data.Price.completion_tokens,
-      total: data.Price.total_tokens
-    })
+      priceType: "current", prices: 
+        [{numberType: "prompt price", value:data.Price.prompt_tokens}, 
+        {numberType: "response price", value:data.Price.completion_tokens},
+        {numberType: "total" ,value:data.Price.total_tokens}]
+      
+      })
 
     setChatLog([...chatLogRefresh, { role: "assistant", content: `${data.GPTresponse}` }])
   }
@@ -51,15 +80,10 @@ function App() {
         </div>
         
         <h1>Aside</h1>
-
-        <div className='tokenPrice'>
-          <div>Current prompt price: </div>
-          <ul>
-            <li>prompt price : { currentPrice.promptPrice } tokens</li>
-            <li>response price : { currentPrice.responsePrice } tokens</li>
-            <li>total : { currentPrice.total } tokens</li>
-          </ul>
-        </div>
+        
+        <TokenPrice priceInfos={currentPrice} />
+        <TokenPrice priceInfos={totalPrice} />
+          
       </aside>
 
       <section className='chatBox'>
@@ -108,6 +132,19 @@ const ChatMessage = ({message})=>{
       <div className='message'>
         {message.content}
       </div>
+    </div>
+  )
+}
+
+const TokenPrice = ({priceInfos})=> {
+  
+  return (
+    <div className='tokenPrice'>
+          <div>{priceInfos.priceType === "current" ? "Current prompt price" : "Total prompts price"}</div>
+          
+          <ul>
+            {priceInfos.prices.map((price, index)=> <li key={index}>{price.numberType} : {price.value}</li>)}
+          </ul>
     </div>
   )
 }

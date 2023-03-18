@@ -11,6 +11,15 @@ function App() {
       {numberType: "total" ,value: 0}]
     
     }) 
+
+    const [totalPrice,setTotalPrice] = useState({
+      priceType: "total", prices:
+        [{numberType: "prompt price", value: 0}, 
+        {numberType: "response price", value: 0},
+        {numberType: "total" ,value: 0}]
+      
+      })
+  
   
   useEffect(() => {
     setTotalPrice({
@@ -22,14 +31,6 @@ function App() {
         ]
     })
   }, [currentPrice]);
-
-  const [totalPrice,setTotalPrice] = useState({
-    priceType: "total", prices:
-      [{numberType: "prompt price", value: 0}, 
-      {numberType: "response price", value: 0},
-      {numberType: "total" ,value: 0}]
-    
-    })
 
   async function handleSubmit(e){
 

@@ -23,6 +23,8 @@ app.post('/', async (req, res) => {
     let response
     let errMessage
 
+    // Debug outputs
+    console.log("Modèle : " + model)
     console.log("Temperature : " + temperature)
     console.log("maxTokens : " + maxTokens)
 

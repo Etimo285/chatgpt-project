@@ -4,17 +4,35 @@ function App() {
 
   const [input, setInput] = useState("")
   const [chatLog, setChatLog] = useState([])
-  const [currentPrice,setCurrentPrice] = useState([
-    {priceType: "current"}, {prices:
-      [{numberType: "promptPrice", value: 0}, 
-      {numberType: "responsePrice", value: 0},
+  const [currentPrice, setCurrentPrice] = useState({
+    priceType: "current", prices:
+      [{numberType: "prompt price", value: 0}, 
+      {numberType: "response price", value: 0},
       {numberType: "total" ,value: 0}]
-    }
+    
+    }) 
   
-  ]) 
-  let totalPrice 
+  useEffect(() => {
+    setTotalPrice({
+        priceType: "total" , 
+        prices: [
+          { numberType: "prompt price", value: currentPrice.prices[0].value + totalPrice.prices[0].value },
+          { numberType: "response price", value: currentPrice.prices[1].value + totalPrice.prices[1].value },
+          { numberType: "total", value: currentPrice.prices[2].value + totalPrice.prices[2].value }
+        ]
+    })
+  }, [currentPrice]);
+
+  const [totalPrice,setTotalPrice] = useState({
+    priceType: "total", prices:
+      [{numberType: "prompt price", value: 0}, 
+      {numberType: "response price", value: 0},
+      {numberType: "total" ,value: 0}]
+    
+    })
 
   async function handleSubmit(e){
+
     e.preventDefault()
     let chatLogRefresh =([...chatLog, {role: "user", content: `${input}`} ])
     setInput("")
@@ -32,16 +50,13 @@ function App() {
 
     const data = await response.json()
 
-    setCurrentPrice([
-      {priceType: "current"},{prices: 
+    setCurrentPrice({
+      priceType: "current", prices: 
         [{numberType: "prompt price", value:data.Price.prompt_tokens}, 
         {numberType: "response price", value:data.Price.completion_tokens},
         {numberType: "total" ,value:data.Price.total_tokens}]
-      }
       
-    ])
-
-    console.log(currentPrice)
+      })
 
     setChatLog([...chatLogRefresh, {role: "assistant", content: `${data.GPTresponse}`}])
   }
@@ -53,6 +68,7 @@ function App() {
         <h1>Aside</h1>
         
         <TokenPrice priceInfos={currentPrice} />
+        <TokenPrice priceInfos={totalPrice} />
           
       </aside>
 
@@ -111,7 +127,7 @@ const TokenPrice = ({priceInfos})=> {
           <div>{priceInfos.priceType === "current" ? "Current prompt price" : "Total prompts price"}</div>
           
           <ul>
-            {priceInfos[1].prices.map((price, index)=> <li key={index}>{price.numberType} : {price.value}</li>)}
+            {priceInfos.prices.map((price, index)=> <li key={index}>{price.numberType} : {price.value}</li>)}
           </ul>
     </div>
   )

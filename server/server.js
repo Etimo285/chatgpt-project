@@ -24,9 +24,15 @@ app.post('/', async (req, res) => {
     let errMessage
 
     // Debug outputs
-    console.log("Modèle : " + model)
-    console.log("Temperature : " + temperature)
-    console.log("maxTokens : " + maxTokens)
+    function logInputValues() {
+        console.log("\n"+`User Input : ${messages[messages.length-1].content} (${typeof(messages[messages.length-1].content)})`)
+        console.log(`Model : ${model} (${typeof(model)})`)
+        console.log(`Temperature : ${temperature} (${typeof(temperature)})`)
+        console.log(`MaxTokens : ${maxTokens} (${typeof(maxTokens)})`+"\n")    
+    }
+
+    // Uncomment the next line to test Input values
+    logInputValues()
 
     if (model.includes("3.5")) {
         response = await openai.createChatCompletion({
@@ -38,7 +44,7 @@ app.post('/', async (req, res) => {
     } else {
         response = await openai.createCompletion({
             model: model,
-            prompt: messages.content,
+            prompt: messages[messages.length-1].content,
             temperature: temperature,
             max_tokens: maxTokens,
         }).catch((e) => { errMessage = e.message ; console.log(errMessage) })

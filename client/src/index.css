@@ -188,3 +188,31 @@ code {
   background: var(--app-green);
   cursor: pointer;
 }
+
+/* Codeblock */
+
+.codeblock {
+  background-color:#4f5d75;
+  border-radius: 10px;
+}
+
+.codeblock-header {
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0px;
+  padding: 5px 10px;
+}
+
+.codeblock-header > span {
+  font-style: italic;
+}
+
+.codeblock-header>button {
+  font-size: larger;
+  color: #edf2f4;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

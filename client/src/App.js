@@ -159,14 +159,15 @@ function App() {
         </div>
         
         <div className='chat-input-box'>
-        <button onClick={() => {
+          {/* En maintenance
+          <button onClick={() => {
             vocalInput.isActive ?
             setVocalInput({ isActive: false, icon: faMicrophone }) :
             setVocalInput({ isActive: true, icon: faMicrophoneSlash })
             console.log(vocalInput) }}
           >
           <FontAwesomeIcon icon={vocalInput.icon} />
-          </button>
+          </button> */}
           <form onSubmit={handleSubmit}>
             <input className='chat-input' value={input} onChange={(e)=> setInput(e.target.value)}></input>
           </form>

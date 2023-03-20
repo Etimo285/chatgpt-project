@@ -63,7 +63,9 @@ function App() {
       },
       body: JSON.stringify({
         messages: chatLogRefresh,
-        model: model
+        model: model,
+        temperature: temperature,
+        maxTokens: maxTokens
       })
     }).then(setChatLog([...chatLogRefresh, {role: "assistant", isWaiting: true} ]))
 
@@ -198,7 +200,7 @@ const ChatMessage = ({message})=>{
       <div className='message'>
       {message.isWaiting && <div className='dot-typing'></div>}
 
-<ReactMarkdown children={message.content}
+    <ReactMarkdown children={message.content}
 components={{
   code({node, inline, className, children, ...props}) {
     const match = /language-(\w+)/.exec(className || '')
@@ -234,10 +236,10 @@ components={{
       </code>
     )
   }
-}} />
-      </div>
-    </div>
-  )
+    }} />
+          </div>
+        </div>
+    )
 }
 
 const TokenPrice = ({priceInfos, model, modelPriceRatio})=> {
@@ -253,7 +255,7 @@ const TokenPrice = ({priceInfos, model, modelPriceRatio})=> {
             {model === "code-davinci-002" && <div>Dollar Price: {Math.round((priceInfos.prices[2].value*modelPriceRatio.code.ratio/1000)*10000)/10000} $</div>}
           </ul>
     </div>
-    
+
   )
 }
 

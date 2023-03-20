@@ -198,43 +198,43 @@ const ChatMessage = ({message})=>{
       <div className='message'>
       {message.isWaiting && <div className='dot-typing'></div>}
 
-<ReactMarkdown children={message.content}
-components={{
-  code({node, inline, className, children, ...props}) {
-    const match = /language-(\w+)/.exec(className || '')
-    return !inline && match ? (
-      <div className='codeblock'>
-        <div className='codeblock-header'>
-          <span>{className.slice(9)}</span>
-          <button
-            onClick={(e) => {
-              navigator.clipboard.writeText(children)
-              e.currentTarget.setAttribute('data-tooltip-content', 'Copied!')
-            }}
-            data-tooltip-id='clipboard-tooltip' 
-            data-tooltip-content='Copy to Clipboard'
-            data-tooltip-place='left'
-            >
-            <FontAwesomeIcon icon={faClipboard} />
-          </button>
-          <Tooltip id='clipboard-tooltip' />
-        </div>
-
-        <SyntaxHighlighter
-          children={String(children).replace(/\n$/, '')}
-          style={vscDarkPlus}
-          language={match[1]}
-          PreTag="div"
-          {...props}
-        />
-      </div>
-    ) : (
-      <code className={className} {...props}>
-        {children}
-      </code>
-    )
-  }
-}} />
+      <ReactMarkdown children={message.content}
+      components={{
+        code({node, inline, className, children, ...props}) {
+          const match = /language-(\w+)/.exec(className || '')
+          return !inline && match ? (
+            <div className='codeblock'>
+              <div className='codeblock-header'>
+                <span>{className.slice(9)}</span>
+                <button
+                  onClick={(e) => {
+                    navigator.clipboard.writeText(children)
+                    e.currentTarget.setAttribute('data-tooltip-content', 'Copied!')
+                  }}
+                  data-tooltip-id='clipboard-tooltip' 
+                  data-tooltip-content='Copy to Clipboard'
+                  data-tooltip-place='left'
+                  >
+                  <FontAwesomeIcon icon={faClipboard} />
+                </button>
+                <Tooltip id='clipboard-tooltip' />
+              </div>
+                
+              <SyntaxHighlighter
+                children={String(children).replace(/\n$/, '')}
+                style={vscDarkPlus}
+                language={match[1]}
+                PreTag="div"
+                {...props}
+              />
+            </div>
+          ) : (
+            <code className={className} {...props}>
+              {children}
+            </code>
+          )
+        }
+      }} />
       </div>
     </div>
   )

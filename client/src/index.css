@@ -1,3 +1,14 @@
+:root{
+  --app-green: #10A37F;
+  --app-orange: #ef8354;
+  --app-dark: #2d3142;
+  --app-dark-grey: #4f5d75;
+  --app-grey: #71809b;
+  --app-light-grey:#bfc0c0;
+  --app-font: #edf2f4;
+
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,7 +16,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #edf2f4;
+  color: var(--app-font);
 }
 
 code {
@@ -22,7 +33,7 @@ code {
   width: 15vw;
   min-width: 150px;
   height: 100vh;
-  background-color: #2d3142;
+  background-color: var(--app-dark);
 }
 
 .tokenPrice{
@@ -30,19 +41,23 @@ code {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border: 2px solid var(--app-grey);
+  border-radius: 10px;
+  margin: 5px;
 }
 
 .tokenPrice ul{
   text-align: left;
   list-style: none;
   padding: 0;
+  margin-bottom: 5px;
 }
 
 .chatBox{
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: #4f5d75;
+  background-color: var(--app-dark-grey);
   position: relative;
   max-height: 100vh;
     overflow-y: scroll;
@@ -57,23 +72,24 @@ code {
 }
 
 .chatMessage.chatGPT{
-  background-color: #71809b;  
+  background-color: var(--app-grey);  
 }
 
 .avatar{
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ef8354 ;
+  background-color: var(--app-orange);
   height: 45px;
   width: 45px;
+  min-width: 45px;
   margin-left: 30px;
   border-radius: 50%;
 
 }
 
 .avatar.chatGPT{
-  background-color: rgb(16, 163, 127);
+  background-color: var(--app-green);
 }
 
 .message {
@@ -92,10 +108,10 @@ code {
   border-radius: 10px;
   outline: none;
   font-size: 1.2rem;
-  background-color: #bfc0c0;
+  background-color: var(--app-light-grey);
   padding: 15px;
   width: 95%;
-  box-shadow: 5px 5px 10px #2d3142;
+  box-shadow: 5px 5px 10px var(--app-dark);
 }
 
 /* Models Selector */
@@ -108,12 +124,27 @@ code {
   width: 100%;
   height: 2rem;
   border: none;
-  color: #edf2f4;
-  background-color:#10A37F;
+  color: var(--app-font);
+  background-color: var(--app-green);
 }
 
 .models-selector option {
   border: none;
+}
+
+.waitingAnimation{
+  animation: spin 8s infinite linear;
+  transform-origin: center;
+}
+
+@keyframes spin {
+  0%{
+    transform: rotate(0deg);
+  }
+
+  100%{
+    transform: rotate(-360deg);
+  }
 }
 
 .dot-typing {
@@ -123,31 +154,29 @@ code {
   top: 15px;
   border-radius: 5px;
   background-color: transparent;
-  color: #9880ff;
-  box-shadow: 12px 0 0 0 #9880ff, 27px 0 0 0 #9880ff, 42px 0 0 0 #9880ff;
-  animation: dot-typing 1.5s infinite linear;
+  animation: dot-typing 1.2s infinite linear;
 }
 
 @keyframes dot-typing {
   0% {
-    box-shadow: 12px 0 0 0 #9880ff, 27px 0 0 0 #9880ff, 42px 0 0 0 #9880ff;
+    box-shadow: 12px 0 0 0 var(--app-light-grey), 27px 0 0 0 var(--app-light-grey), 42px 0 0 0 var(--app-light-grey);
   }
   16.667% {
-    box-shadow: 12px -10px 0 0 #9880ff, 27px 0 0 0 #9880ff, 42px 0 0 0 #9880ff;
+    box-shadow: 12px -5px 0 0 var(--app-font), 27px 0 0 0 var(--app-light-grey), 42px 0 0 0 var(--app-light-grey);
   }
   33.333% {
-    box-shadow: 12px 0 0 0 #9880ff, 27px 0 0 0 #9880ff, 42px 0 0 0 #9880ff;
+    box-shadow: 12px 0 0 0 var(--app-light-grey), 27px 0 0 0 var(--app-light-grey), 42px 0 0 0 var(--app-light-grey);
   }
   50% {
-    box-shadow: 12px 0 0 0 #9880ff, 27px -10px 0 0 #9880ff, 42px 0 0 0 #9880ff;
+    box-shadow: 12px 0 0 0 var(--app-light-grey), 27px -5px 0 0 var(--app-font), 42px 0 0 0 var(--app-light-grey);
   }
   66.667% {
-    box-shadow: 12px 0 0 0 #9880ff, 27px 0 0 0 #9880ff, 42px 0 0 0 #9880ff;
+    box-shadow: 12px 0 0 0 var(--app-light-grey), 27px 0 0 0 var(--app-light-grey), 42px 0 0 0 var(--app-light-grey);
   }
   83.333% {
-    box-shadow: 12px 0 0 0 #9880ff, 27px 0 0 0 #9880ff, 42px -10px 0 0 #9880ff;
+    box-shadow: 12px 0 0 0 var(--app-light-grey), 27px 0 0 0 var(--app-light-grey), 42px -5px 0 0 var(--app-font);
   }
   100% {
-    box-shadow: 12px 0 0 0 #9880ff, 27px 0 0 0 #9880ff, 42px 0 0 0 #9880ff;
+    box-shadow: 12px 0 0 0 var(--app-light-grey), 27px 0 0 0 var(--app-light-grey), 42px 0 0 0 var(--app-light-grey);
   }
 }

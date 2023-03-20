@@ -131,6 +131,7 @@ code {
 .models-selector option {
   border: none;
 }
+/* Waiting Animation */
 
 .waitingAnimation{
   animation: spin 8s infinite linear;
@@ -179,4 +180,106 @@ code {
   100% {
     box-shadow: 12px 0 0 0 var(--app-light-grey), 27px 0 0 0 var(--app-light-grey), 42px 0 0 0 var(--app-light-grey);
   }
+}
+
+/* Temperature && Max Tokens Slider */
+
+.temperature, .max-tokens {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.temperature-slider, .max-tokens-slider {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.temperature-header>input, .max-tokens-header>input {
+  width: 2rem;
+  margin-left: 10px;
+  -moz-appearance: textfield;
+  appearance: textfield;
+  text-align: center;
+}
+
+.temperature-header>input::-webkit-inner-spin-button,
+.temperature-header>input::-webkit-outer-spin-button,
+.max-tokens-header>input::-webkit-inner-spin-button,
+.max-tokens-header>input::-webkit-outer-spin-button
+{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 90%;
+  height: 15px;
+  border-radius: 15px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--app-green);
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; 
+  height: 25px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--app-green);
+  cursor: pointer;
+}
+
+/* Codeblock */
+
+.codeblock {
+  background-color:#4f5d75;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.codeblock div:nth-child(2) {
+  border-radius: 0 0 10px 10px;
+}
+
+.codeblock-header {
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0px;
+  padding: 5px 10px;
+}
+
+.codeblock-header > span {
+  font-style: italic;
+}
+
+.codeblock-header>button {
+  font-size: larger;
+  color: #edf2f4;
+  background: none;
+  border: none;
+  cursor: pointer;
 }

@@ -16,33 +16,42 @@ const configuration = new Configuration({
 })
 const openai = new OpenAIApi(configuration)
 
-
-
 app.post('/', async (req, res) => {
 
-    const { messages, model } = req.body
+    const { messages, model, temperature, maxTokens } = req.body
 
     let response
     let errMessage
 
-    if (model === "gpt-3.5-turbo") {
+    // Debug outputs
+    function logInputValues() {
+        console.log("\n"+`User Input : ${messages[messages.length-1].content} (${typeof(messages[messages.length-1].content)})`)
+        console.log(`Model : ${model} (${typeof(model)})`)
+        console.log(`Temperature : ${temperature} (${typeof(temperature)})`)
+        console.log(`MaxTokens : ${maxTokens} (${typeof(maxTokens)})`+"\n")    
+    }
+
+    // Uncomment the next line to test Input values
+    // logInputValues()
+
+    if (model.includes("3.5")) {
         response = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
+            model: model,
             messages: messages,
-            temperature: 0.5,
-            max_tokens: 100,
+            temperature: temperature,
+            max_tokens: maxTokens,
         }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
     } else {
         response = await openai.createCompletion({
             model: model,
-            prompt: messages.content,
-            temperature: 0.5,
-            max_tokens: 100,
+            prompt: messages[messages.length-1].content,
+            temperature: temperature,
+            max_tokens: maxTokens,
         }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
     }  
 
     res.json({
-        GPTresponse: model === "gpt-3.5-turbo" ? 
+        GPTresponse: model.includes("3.5") ?
             response.data.choices[0].message.content :
             response.data.choices[0].text,
         ErrorResponse: errMessage,

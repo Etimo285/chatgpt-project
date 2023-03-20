@@ -1,4 +1,10 @@
 import { useState, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMicrophone, faMicrophoneSlash, faClipboard } from '@fortawesome/free-solid-svg-icons'
+import ReactMarkdown from 'react-markdown'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { Tooltip } from 'react-tooltip'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import './App.css'
 
 function App() {
@@ -29,6 +35,8 @@ function App() {
       {numberType: "total" ,value: 0}]
     
     })
+  const [temperature, setTemperature] = useState(0.5)
+  const [maxTokens, setMaxTokens] = useState(100)
   
   useEffect(() => {
     setTotalPrice({
@@ -92,6 +100,56 @@ function App() {
         <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={currentPrice} />
         <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={totalPrice} />
           
+        <div className='temperature'>
+
+          <div className='temperature-header'>
+            Temperature : 
+            <input type="number" step="0.01" min="0" max="1"
+              value={temperature}
+              onChange={(e) => {
+                if (e.target.value >= 1) e.target.value = 1
+                if (e.target.value <= 0) e.target.value = 0
+                setTemperature(parseFloat(e.target.value)) 
+                }}>
+            </input>
+          </div>
+          <div className="temperature-slider">
+            <input type="range" step="0.01" min="0" max="1"
+            className="slider"
+            value={temperature}
+            onChange={(e) => { setTemperature(parseFloat(e.target.value)) }}>
+            </input>
+          </div>
+
+        </div>
+
+        <div className='max-tokens'>
+          
+          <div className='max-tokens-header'>
+            Max Tokens :
+            <input type="number" step="1" min="1" max="200"
+              value={maxTokens}
+              onChange={(e) => {
+                if (e.target.value >= 200) e.target.value = 200
+                if (e.target.value <= 1) e.target.value = 1
+                setMaxTokens(parseInt(e.target.value))
+              }}>
+            </input>
+          </div>
+
+          <div className="max-tokens-slider">
+            <form>
+              
+              <input type="range" step="1" min="1" max="200"
+                className="slider"
+                value={maxTokens}
+                onChange={(e) => { setMaxTokens(parseInt(e.target.value)) }}>
+              </input>
+            </form>
+          </div>
+
+        </div>
+
       </aside>
 
       <section className='chatBox'>
@@ -138,8 +196,45 @@ const ChatMessage = ({message})=>{
       </div>
 
       <div className='message'>
-        {message.isWaiting && <div className='dot-typing'></div>}
-        {message.content}
+      {message.isWaiting && <div className='dot-typing'></div>}
+
+<ReactMarkdown children={message.content}
+components={{
+  code({node, inline, className, children, ...props}) {
+    const match = /language-(\w+)/.exec(className || '')
+    return !inline && match ? (
+      <div className='codeblock'>
+        <div className='codeblock-header'>
+          <span>{className.slice(9)}</span>
+          <button
+            onClick={(e) => {
+              navigator.clipboard.writeText(children)
+              e.currentTarget.setAttribute('data-tooltip-content', 'Copied!')
+            }}
+            data-tooltip-id='clipboard-tooltip' 
+            data-tooltip-content='Copy to Clipboard'
+            data-tooltip-place='left'
+            >
+            <FontAwesomeIcon icon={faClipboard} />
+          </button>
+          <Tooltip id='clipboard-tooltip' />
+        </div>
+
+        <SyntaxHighlighter
+          children={String(children).replace(/\n$/, '')}
+          style={vscDarkPlus}
+          language={match[1]}
+          PreTag="div"
+          {...props}
+        />
+      </div>
+    ) : (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    )
+  }
+}} />
       </div>
     </div>
   )

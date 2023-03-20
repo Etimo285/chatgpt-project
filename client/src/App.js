@@ -101,7 +101,6 @@ function App() {
         <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={currentPrice} />
         <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={totalPrice} />
           
-
         <div className='temperature'>
 
           <div className='temperature-header'>

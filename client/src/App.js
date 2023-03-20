@@ -253,6 +253,7 @@ const TokenPrice = ({priceInfos, model, modelPriceRatio})=> {
             {model === "code-davinci-002" && <div>Dollar Price: {Math.round((priceInfos.prices[2].value*modelPriceRatio.code.ratio/1000)*10000)/10000} $</div>}
           </ul>
     </div>
+    
   )
 }
 

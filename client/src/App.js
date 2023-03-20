@@ -126,7 +126,7 @@ function App() {
                 if (e.target.value >= 200) e.target.value = 200
                 if (e.target.value <= 1) e.target.value = 1
                 setMaxTokens(parseInt(e.target.value))
-                }}>
+              }}>
             </input>
           </div>
 
@@ -152,14 +152,14 @@ function App() {
 
           <ChatMessage message={{ role: 'assistant', content: 'Hello, how can I help you today ?' }} />
         
-          {chatLog.map((message, index)=>(
+          {chatLog.map((message, index) => (
             <ChatMessage key={index} message={message} />
           ))}
 
         </div>
         
         <div className='chat-input-box'>
-          {/* En maintenance
+          {/* En maintenance...
           <button onClick={() => {
             vocalInput.isActive ?
             setVocalInput({ isActive: false, icon: faMicrophone }) :
@@ -168,8 +168,12 @@ function App() {
           >
           <FontAwesomeIcon icon={vocalInput.icon} />
           </button> */}
-          <form onSubmit={handleSubmit}>
-            <input className='chat-input' value={input} onChange={(e)=> setInput(e.target.value)}></input>
+          <form onSubmit={(e) => {
+            handleSubmit(e)
+          }}>
+            <input type='text' className='chat-input' value={input}
+              onChange={(e) => setInput(e.target.value)}
+            ></input>
           </form>
             
         </div>
@@ -219,7 +223,7 @@ const ChatMessage = ({message})=> {
                     >
                     <FontAwesomeIcon icon={faClipboard} />
                   </button>
-                  <Tooltip id='clipboard-tooltip'/>
+                  <Tooltip id='clipboard-tooltip' />
                 </div>
 
                 <SyntaxHighlighter

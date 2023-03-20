@@ -32,7 +32,7 @@ app.post('/', async (req, res) => {
     }
 
     // Uncomment the next line to test Input values
-    logInputValues()
+    // logInputValues()
 
     if (model.includes("3.5")) {
         response = await openai.createChatCompletion({

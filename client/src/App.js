@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMicrophone, faMicrophoneSlash, faClipboard } from '@fortawesome/free-solid-svg-icons'
+import { faClipboard, faCheck, faQuestion, faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { Tooltip } from 'react-tooltip'
@@ -19,7 +19,9 @@ function App() {
       {ratio: 0.002}
   }
   const [input, setInput] = useState("")
-  const [chatLog, setChatLog] = useState([])
+  const [contextPrompt, setContextPrompt] = useState("")
+  //const [vocalInput, setVocalInput] = useState({ isActive: false, icon: faMicrophoneSlash })
+  const [chatLog, setChatLog] = useState([{ role: "system", content: "" }])
   const [currentPrice,  setCurrentPrice] = useState({
     priceType: "current", prices:
       [{numberType: "prompt price", value: 0}, 
@@ -27,8 +29,7 @@ function App() {
       {numberType: "total" ,value: 0}]
     
     })
-
-  const [totalPrice,setTotalPrice] = useState({
+  const [totalPrice, setTotalPrice] = useState({
     priceType: "total", prices:
       [{numberType: "prompt price", value: 0}, 
       {numberType: "response price", value: 0},
@@ -63,9 +64,11 @@ function App() {
       },
       body: JSON.stringify({
         messages: chatLogRefresh,
-        model: model
+        model: model,
+        temperature: temperature,
+        maxTokens: maxTokens,
       })
-    }).then(setChatLog([...chatLogRefresh, {role: "assistant", isWaiting: true} ]))
+    }).then(setChatLog([...chatLogRefresh, { role: "assistant", isWaiting: true } ]))
 
     const data = await response.json()
 
@@ -78,7 +81,6 @@ function App() {
       })
 
     setChatLog([...chatLogRefresh, { role: "assistant", content: `${data.GPTresponse}` }])
-    
   }
 
   return (
@@ -103,13 +105,13 @@ function App() {
         <div className='temperature'>
 
           <div className='temperature-header'>
-            Temperature : 
+            <span>Temperature :</span>
             <input type="number" step="0.01" min="0" max="1"
               value={temperature}
               onChange={(e) => {
                 if (e.target.value >= 1) e.target.value = 1
                 if (e.target.value <= 0) e.target.value = 0
-                setTemperature(parseFloat(e.target.value)) 
+                setTemperature(parseFloat(e.target.value))
                 }}>
             </input>
           </div>
@@ -117,7 +119,7 @@ function App() {
             <input type="range" step="0.01" min="0" max="1"
             className="slider"
             value={temperature}
-            onChange={(e) => { setTemperature(parseFloat(e.target.value)) }}>
+            onChange={(e) => setTemperature(parseFloat(e.target.value))}>
             </input>
           </div>
 
@@ -126,7 +128,7 @@ function App() {
         <div className='max-tokens'>
           
           <div className='max-tokens-header'>
-            Max Tokens :
+            <span>Max Tokens :</span>
             <input type="number" step="1" min="1" max="200"
               value={maxTokens}
               onChange={(e) => {
@@ -137,15 +139,12 @@ function App() {
             </input>
           </div>
 
-          <div className="max-tokens-slider">
-            <form>
-              
+          <div className="max-tokens-slider">           
               <input type="range" step="1" min="1" max="200"
                 className="slider"
                 value={maxTokens}
-                onChange={(e) => { setMaxTokens(parseInt(e.target.value)) }}>
+                onChange={(e) => setMaxTokens(parseInt(e.target.value))}>
               </input>
-            </form>
           </div>
 
         </div>
@@ -153,14 +152,29 @@ function App() {
       </aside>
 
       <section className='chatBox'>
+
         <h1>Chat</h1>
-        
+
+        <div className='context'>
+          
+          <form onSubmit={(e) => { 
+            e.preventDefault()
+            chatLog[0].content = contextPrompt
+            console.log(chatLog)
+            }}>
+            <input type='text' className='context-textarea'
+              onChange={(e) => setContextPrompt(e.target.value)}
+            >
+            </input>
+          </form>
+            
+        </div>
 
         <div className='chatLog'>      
 
           <ChatMessage message={{ role: 'assistant', content: 'Hello, how can I help you today ?' }} />
         
-          {chatLog.map((message, index)=>(
+          {chatLog.filter((msg) => msg.role === "assistant" || msg.role === "user").map((message, index) => (
             <ChatMessage key={index} message={message} />
           ))}
 
@@ -193,6 +207,7 @@ const ChatMessage = ({message})=>{
           fill="currentColor"
           />
         </svg>}
+        
       </div>
 
       <div className='message'>

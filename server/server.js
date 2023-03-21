@@ -22,17 +22,19 @@ app.post('/', async (req, res) => {
 
     let response
     let errMessage
+    let contextPrompts = messages.filter((msg) => { return msg.role === 'system' })
 
     // Debug outputs
     function logInputValues() {
-        console.log("\n"+`User Input : ${messages[messages.length-1].content} (${typeof(messages[messages.length-1].content)})`)
+        console.log("\n"+`Context prompt : ${contextPrompts[contextPrompts.length-1].content} (${typeof(contextPrompts[contextPrompts.length-1].content)})`)
+        console.log(`User Input : ${messages[messages.length-1].content} (${typeof(messages[messages.length-1].content)})`)
         console.log(`Model : ${model} (${typeof(model)})`)
         console.log(`Temperature : ${temperature} (${typeof(temperature)})`)
-        console.log(`MaxTokens : ${maxTokens} (${typeof(maxTokens)})`+"\n")    
+        console.log(`MaxTokens : ${maxTokens} (${typeof(maxTokens)})`+"\n")
     }
 
     // Uncomment the next line to test Input values
-    // logInputValues()
+    logInputValues()
 
     if (model.includes("3.5")) {
         response = await openai.createChatCompletion({

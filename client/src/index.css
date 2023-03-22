@@ -191,9 +191,9 @@ code {
   }
 }
 
-/* Temperature && Max Tokens Slider */
+/* Slider */
 
-.temperature, .max-tokens {
+.slider {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -201,12 +201,7 @@ code {
   margin-top: 15px;
 }
 
-.temperature-slider, .max-tokens-slider {
-  margin-top: 10px;
-  width: 100%;
-}
-
-.temperature-header>input, .max-tokens-header>input {
+.slider-header>input {
   width: 2rem;
   margin-left: 10px;
   -moz-appearance: textfield;
@@ -214,16 +209,19 @@ code {
   text-align: center;
 }
 
-.temperature-header>input::-webkit-inner-spin-button,
-.temperature-header>input::-webkit-outer-spin-button,
-.max-tokens-header>input::-webkit-inner-spin-button,
-.max-tokens-header>input::-webkit-outer-spin-button
+.slider-header>input::-webkit-inner-spin-button,
+.slider-header>input::-webkit-outer-spin-button
 {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.slider {
+.slider-body {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.slider-bar {
   -webkit-appearance: none;
   appearance: none;
   width: 90%;
@@ -236,11 +234,11 @@ code {
   transition: opacity .2s;
 }
 
-.slider:hover {
+.slider-bar:hover {
   opacity: 1;
 }
 
-.slider::-webkit-slider-thumb {
+.slider-bar::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 25px;
@@ -251,7 +249,7 @@ code {
   cursor: pointer;
 }
 
-.slider::-moz-range-thumb {
+.slider-bar::-moz-range-thumb {
   width: 25px; 
   height: 25px;
   border: 0;

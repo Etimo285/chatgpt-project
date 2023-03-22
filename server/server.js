@@ -40,15 +40,15 @@ app.post('/', async (req, res) => {
         response = await openai.createChatCompletion({
             model: model,
             messages: messages,
-            temperature: temperature,
-            max_tokens: maxTokens,
+            temperature: parseFloat(temperature),
+            max_tokens: parseInt(maxTokens),
         }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
     } else {
         response = await openai.createCompletion({
             model: model,
             prompt: messages[messages.length-1].content,
-            temperature: temperature,
-            max_tokens: maxTokens,
+            temperature: parseFloat(temperature),
+            max_tokens: parseInt(maxTokens),
         }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
     }  
 

@@ -39,7 +39,7 @@ function ChatMessage({message}){
                         navigator.clipboard.writeText(children)
                         e.currentTarget.setAttribute('data-tooltip-content', 'Copied!')
                       }}
-                      data-tooltip-id='clipboard-tooltip' 
+                      data-tooltip-id='clipboard-tooltip'
                       data-tooltip-content='Copy to Clipboard'
                       data-tooltip-place='left'
                       >
@@ -82,11 +82,14 @@ function TokenPrice({priceInfos, model, modelPriceRatio}) {
     )
 }
 
-function HookSlider({name, state, setState, step, min, max}) {
+function HookSlider({label, description, state, setState, step, min, max}) {
     return (
         <div className="slider">
             <div className="slider-header">
-                <span>{`${name ? name.charAt(0).toUpperCase() + name.slice(1) : "?"} :`}</span>
+                <span data-tooltip-id='description-tooltip' data-tooltip-content={description} style={description ? {cursor: 'help'} : {}}>
+                  {`${label ? label.charAt(0).toUpperCase() + label.slice(1) : "?"} :`}
+                </span>
+                {description && <Tooltip id='description-tooltip' />}
                 <input type="number" step={step} min={min} max={max}
                     value={state}
                     onChange={(e) => {

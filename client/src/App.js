@@ -30,9 +30,11 @@ function App() {
       {numberType: "response price", value: 0},
       {numberType: "total" ,value: 0}]
   })
-  const [temperature, setTemperature] = useState(0.5)
   const [maxTokens, setMaxTokens] = useState(100)
-  
+  const [temperature, setTemperature] = useState(1)
+  const [presencePenalty, setPresencePenalty] = useState(0)
+  const [frequencyPenalty, setFrequencyPenalty] = useState(0)
+
   useEffect(() => {
     setTotalPrice({
         priceType: "total" , 
@@ -59,8 +61,10 @@ function App() {
       body: JSON.stringify({
         messages: chatLogRefresh,
         model: model,
-        temperature: temperature,
         maxTokens: maxTokens,
+        temperature: temperature,
+        presencePenalty: presencePenalty,
+        frequencyPenalty: frequencyPenalty
       })
     }).then(setChatLog([...chatLogRefresh, { role: "assistant", isWaiting: true } ]))
 
@@ -97,8 +101,16 @@ function App() {
         <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={currentPrice} />
         <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={totalPrice} />
 
-        <HookSlider name="temperature" state={temperature} setState={setTemperature} step="0.01" min="0" max="1" />
-        <HookSlider name="max tokens" state={maxTokens} setState={setMaxTokens} step="1" min="1" max="200" />
+        <div className='hook-sliders'>
+          <HookSlider label="max tokens" description="The amount of maximum tokens allowed for the response" 
+          state={maxTokens} setState={setMaxTokens} step="1" min="1" max="200" />
+          <HookSlider label="temperature" description="Determines the response creativity value"
+          state={temperature} setState={setTemperature} step="0.01" min="0" max="2" />
+          <HookSlider label="presence penalty" description="Higher value means more likely to talk about new topics"
+          state={presencePenalty} setState={setPresencePenalty} step="0.1" min="-2" max="2" />
+          <HookSlider label="frequency penalty" description="Higher value means less likely to repeat the same text"
+          state={frequencyPenalty} setState={setFrequencyPenalty} step="0.1" min="-2" max="2" />
+        </div>
 
       </aside>
 

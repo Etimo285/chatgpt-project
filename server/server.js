@@ -18,7 +18,7 @@ const openai = new OpenAIApi(configuration)
 
 app.post('/', async (req, res) => {
 
-    const { messages, model, temperature, maxTokens } = req.body
+    const { messages, model, maxTokens, temperature, presencePenalty, frequencyPenalty } = req.body
 
     let response
     let errMessage
@@ -29,26 +29,30 @@ app.post('/', async (req, res) => {
         console.log("\n"+`Context prompt : ${contextPrompts[contextPrompts.length-1].content} (${typeof(contextPrompts[contextPrompts.length-1].content)})`)
         console.log(`User Input : ${messages[messages.length-1].content} (${typeof(messages[messages.length-1].content)})`)
         console.log(`Model : ${model} (${typeof(model)})`)
+        console.log(`MaxTokens : ${maxTokens} (${typeof(maxTokens)})`)
         console.log(`Temperature : ${temperature} (${typeof(temperature)})`)
-        console.log(`MaxTokens : ${maxTokens} (${typeof(maxTokens)})`+"\n")
+        console.log(`PresencePenalty : ${presencePenalty} (${typeof(presencePenalty)})`)
+        console.log(`FrequencyPenalty : ${frequencyPenalty} (${typeof(frequencyPenalty)})`)
     }
 
     // Uncomment the next line to test Input values
-    logInputValues()
+    // logInputValues()
 
     if (model.includes("3.5")) {
         response = await openai.createChatCompletion({
             model: model,
             messages: messages,
-            temperature: parseFloat(temperature),
             max_tokens: parseInt(maxTokens),
+            temperature: parseFloat(temperature),
+            presence_penalty: parseFloat(presencePenalty),
+            frequency_penalty: parseFloat(frequencyPenalty)
         }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
     } else {
         response = await openai.createCompletion({
             model: model,
             prompt: messages[messages.length-1].content,
-            temperature: parseFloat(temperature),
             max_tokens: parseInt(maxTokens),
+            temperature: parseFloat(temperature),
         }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
     }  
 

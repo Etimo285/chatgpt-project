@@ -294,3 +294,9 @@ code {
   border: none;
   cursor: pointer;
 }
+
+/* Tooltip */
+
+.react-tooltip {
+  z-index: 9999;
+}

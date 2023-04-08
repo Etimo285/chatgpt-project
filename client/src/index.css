@@ -71,11 +71,15 @@ code {
   padding: 30px;
 }
 
-.chatMessage.chatGPT{
+.chatMessage.chatGPT {
   background-color: var(--app-grey);  
 }
 
-.avatar{
+.chatMessage.system {
+  background-color: rgb(47, 94, 133);
+}
+
+.avatar {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,6 +94,10 @@ code {
 
 .avatar.chatGPT{
   background-color: var(--app-green);
+}
+
+.avatar.system {
+  background-color: var(--app-dark);
 }
 
 .message {
@@ -131,6 +139,7 @@ code {
 .models-selector option {
   border: none;
 }
+
 /* Waiting Animation */
 
 .waitingAnimation{
@@ -250,6 +259,10 @@ code {
   background: var(--app-green);
   cursor: pointer;
 }
+
+/* Context Prompt Textarea */
+
+
 
 /* Codeblock */
 

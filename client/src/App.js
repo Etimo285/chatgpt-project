@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClipboard, faCheck, faQuestion, faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
+import { faClipboard, faCircleQuestion, faCheck, faQuestion, faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { Tooltip } from 'react-tooltip'
@@ -129,10 +129,10 @@ function App() {
           
           <div className='max-tokens-header'>
             <span>Max Tokens :</span>
-            <input type="number" step="1" min="1" max="200"
+            <input type="number" step="1" min="1" max="2000"
               value={maxTokens}
               onChange={(e) => {
-                if (e.target.value >= 200) e.target.value = 200
+                if (e.target.value >= 2000) e.target.value = 2000
                 if (e.target.value <= 1) e.target.value = 1
                 setMaxTokens(parseInt(e.target.value))
               }}>
@@ -140,7 +140,7 @@ function App() {
           </div>
 
           <div className="max-tokens-slider">           
-              <input type="range" step="1" min="1" max="200"
+              <input type="range" step="1" min="1" max="2000"
                 className="slider"
                 value={maxTokens}
                 onChange={(e) => setMaxTokens(parseInt(e.target.value))}>
@@ -153,23 +153,41 @@ function App() {
 
       <section className='chatBox'>
 
-        <h1>Chat</h1>
-
-        <div className='context'>
+        <nav className='navBar'>
           
-          <form onSubmit={(e) => { 
-            e.preventDefault()
-            chatLog[0].content = contextPrompt
-            console.log(chatLog)
-            }}>
-            <input type='text' className='context-textarea'
-              onChange={(e) => setContextPrompt(e.target.value)}
-            >
-            </input>
-          </form>
+          <ul className='navList'>
+            <h1>Chat</h1>
             
-        </div>
+            <div className='contextCheckbox'>
+              <input type="checkbox" id="context" name="context" onClick={(e)=> document. querySelector(".context").classList.toggle("true")}>
+              </input><label for="context">Context Prompt</label>
 
+              <div className='tooltip'>
+                <FontAwesomeIcon icon={faCircleQuestion} />
+                <span className='tooltipText'>"Context prompt" set the behavior of  chatGPT. For example, try "You are a caveman. You will answer using a “caveman” tone ". Please note that this functionality is not always working well.</span>
+              </div>
+
+            </div>
+            
+          
+            
+          </ul>
+          
+          <div className='context'>
+              
+            <form onSubmit={(e) => { 
+              e.preventDefault()
+              chatLog[0].content = contextPrompt
+              console.log(contextPrompt)
+              }}>
+              <input type='text' className='context-textarea'
+                onChange={(e) => setContextPrompt(e.target.value)}
+              ></input>
+            </form>
+
+          </div>
+        </nav>
+       
         <div className='chatLog'>      
 
           <ChatMessage message={{ role: 'assistant', content: 'Hello, how can I help you today ?' }} />

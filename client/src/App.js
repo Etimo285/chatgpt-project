@@ -29,6 +29,7 @@ function App() {
       {numberType: "total" ,value: 0}]
     
     })
+  
   const [totalPrice, setTotalPrice] = useState({
     priceType: "total", prices:
       [{numberType: "prompt price", value: 0}, 

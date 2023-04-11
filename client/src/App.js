@@ -106,17 +106,24 @@ function App() {
 
           <div className='temperature-header'>
             <span>Temperature :</span>
-            <input type="number" step="0.01" min="0" max="1"
+            <input type="number" step="0.01" min="0" max="2"
               value={temperature}
               onChange={(e) => {
-                if (e.target.value >= 1) e.target.value = 1
+                if (e.target.value >= 2) e.target.value = 2
                 if (e.target.value <= 0) e.target.value = 0
                 setTemperature(parseFloat(e.target.value))
                 }}>
             </input>
+
+            <div className='tooltip'>
+              <FontAwesomeIcon icon={faCircleQuestion} />
+              <span className='tooltipText'>Determine how random responses will be. Higher values like 1.5 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.</span>
+            </div>
+            
           </div>
+
           <div className="temperature-slider">
-            <input type="range" step="0.01" min="0" max="1"
+            <input type="range" step="0.01" min="0" max="2"
             className="slider"
             value={temperature}
             onChange={(e) => setTemperature(parseFloat(e.target.value))}>
@@ -137,6 +144,11 @@ function App() {
                 setMaxTokens(parseInt(e.target.value))
               }}>
             </input>
+
+            <div className='tooltip'>
+              <FontAwesomeIcon icon={faCircleQuestion} />
+              <span className='tooltipText'>Set the maximum number of tokens to generate in the response.</span>
+            </div>
           </div>
 
           <div className="max-tokens-slider">           

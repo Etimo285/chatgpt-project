@@ -6,9 +6,10 @@
 
 ### About us
 
-This project has been made in a collaboration of the members :
-> Sanbye (https://github.com/Sanbye)  
-> Etimo (https://github.com/Etimo285)
+This project has been made in a collaboration of the members :  
+
+- Sanbye (https://github.com/Sanbye)  
+- Etimo (https://github.com/Etimo285)
 
 ### About the project
 

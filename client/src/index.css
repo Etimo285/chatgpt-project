@@ -334,12 +334,16 @@ code {
   margin-top: 15px;
 }
 
+.slider-header{
+  display: flex;
+}
+
 .temperature-slider, .max-tokens-slider {
   margin-top: 10px;
   width: 100%;
 }
 
-.temperature-header>input, .max-tokens-header>input {
+.slider-header>input, .max-tokens-header>input {
   width: 2rem;
   margin-left: 10px;
   -moz-appearance: textfield;

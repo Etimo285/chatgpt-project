@@ -102,6 +102,10 @@ code {
   position: relative;
 }
 
+.tooltip:hover .tooltipText{
+  visibility: visible;
+}
+
 .contextCheckbox .tooltipText {
   visibility: hidden;
   position: absolute;
@@ -117,6 +121,59 @@ code {
   text-align: left;
 }
 
+.temperature-header .tooltipText {
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+  margin-top: -5px;
+  left: 150%;
+  width: 300px;
+  
+  background-color: var(--app-light-grey);
+  color: var(--app-dark);
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 6px;
+  text-align: left;
+}
+
+.temperature-header .tooltip .tooltipText::after {
+  content: " ";
+  position: absolute;
+  top: 15%;
+  right: 100%; 
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent var(--app-light-grey) transparent transparent;
+}
+
+.max-tokens-header .tooltipText{
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+  margin-top: -5px;
+  left: 150%;
+  width: 300px;
+  
+  background-color: var(--app-light-grey);
+  color: var(--app-dark);
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 6px;
+  text-align: left;
+}
+
+.max-tokens-header .tooltip .tooltipText::after {
+  content: " ";
+  position: absolute;
+  top: 32%;
+  right: 100%; 
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent var(--app-light-grey) transparent transparent;
+}
+
 .tooltip .tooltipText::after {
   content: " ";
   position: absolute;
@@ -126,10 +183,6 @@ code {
   border-width: 5px;
   border-style: solid;
   border-color: transparent var(--app-dark) transparent transparent;
-}
-
-.tooltip:hover .tooltipText{
-  visibility: visible;
 }
 
 .chatBox{
@@ -279,6 +332,10 @@ code {
   justify-content: center;
   align-items: center;
   margin-top: 15px;
+}
+
+.temperature-header, .max-tokens-header{
+  display: flex;
 }
 
 .temperature-slider, .max-tokens-slider {

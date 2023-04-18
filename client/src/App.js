@@ -107,9 +107,9 @@ function App() {
         <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={currentPrice} />
         <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={totalPrice} />
           
-        <div className='temperature'>
+        <div className='slider'>
 
-          <div className='temperature-header'>
+          <div className='slider-header'>
             <span>Temperature :</span>
             <input type="number" step="0.01" min="0" max="1"
               value={temperature}
@@ -120,9 +120,9 @@ function App() {
                 }}>
             </input>
           </div>
-          <div className="temperature-slider">
+          <div className="slider-body">
             <input type="range" step="0.01" min="0" max="1"
-            className="slider"
+            className="slider-bar"
             value={temperature}
             onChange={(e) => setTemperature(parseFloat(e.target.value))}>
             </input>
@@ -130,9 +130,9 @@ function App() {
 
         </div>
 
-        <div className='max-tokens'>
+        <div className='slider'>
           
-          <div className='max-tokens-header'>
+          <div className='slider-header'>
             <span>Max Tokens :</span>
             <input type="number" step="1" min="1" max="2000"
               value={maxTokens}
@@ -144,9 +144,9 @@ function App() {
             </input>
           </div>
 
-          <div className="max-tokens-slider">           
+          <div className="slider-body">           
               <input type="range" step="1" min="1" max="2000"
-                className="slider"
+                className="slider-bar"
                 value={maxTokens}
                 onChange={(e) => setMaxTokens(parseInt(e.target.value))}>
               </input>

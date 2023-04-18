@@ -121,7 +121,7 @@ code {
   text-align: left;
 }
 
-.temperature-header .tooltipText {
+.temperature .tooltipText {
   visibility: hidden;
   position: absolute;
   z-index: 1;
@@ -137,7 +137,7 @@ code {
   text-align: left;
 }
 
-.temperature-header .tooltip .tooltipText::after {
+.temperature .tooltip .tooltipText::after {
   content: " ";
   position: absolute;
   top: 15%;
@@ -148,7 +148,7 @@ code {
   border-color: transparent var(--app-light-grey) transparent transparent;
 }
 
-.max-tokens-header .tooltipText{
+.max-tokens .tooltipText{
   visibility: hidden;
   position: absolute;
   z-index: 1;
@@ -164,7 +164,7 @@ code {
   text-align: left;
 }
 
-.max-tokens-header .tooltip .tooltipText::after {
+.max-tokens .tooltip .tooltipText::after {
   content: " ";
   position: absolute;
   top: 32%;

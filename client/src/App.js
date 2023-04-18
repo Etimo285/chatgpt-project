@@ -109,7 +109,7 @@ function App() {
           
         <div className='slider'>
 
-          <div className='slider-header'>
+          <div className='slider-header temperature'>
             <span>Temperature :</span>
             <input type="number" step="0.01" min="0" max="2"
               value={temperature}
@@ -138,7 +138,7 @@ function App() {
 
         <div className='slider'>
           
-          <div className='slider-header'>
+          <div className='slider-header max-tokens'>
             <span>Max Tokens :</span>
             <input type="number" step="1" min="1" max="2000"
               value={maxTokens}

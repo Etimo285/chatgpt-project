@@ -106,63 +106,16 @@ function App() {
         
         <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={currentPrice} />
         <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={totalPrice} />
-          
-        <div className='slider'>
 
-          <div className='slider-header temperature'>
-            <span>Temperature :</span>
-            <input type="number" step="0.01" min="0" max="2"
-              value={temperature}
-              onChange={(e) => {
-                if (e.target.value >= 2) e.target.value = 2
-                if (e.target.value <= 0) e.target.value = 0
-                setTemperature(parseFloat(e.target.value))
-                }}>
-            </input>
-
-            <div className='tooltip'>
-              <FontAwesomeIcon icon={faCircleQuestion} />
-              <span className='tooltipText'>Determine how random responses will be. Higher values like 1.5 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.</span>
-            </div>
-            
-          </div>
-          <div className="slider-body">
-            <input type="range" step="0.01" min="0" max="1"
-            className="slider-bar"
-            value={temperature}
-            onChange={(e) => setTemperature(parseFloat(e.target.value))}>
-            </input>
-          </div>
-
-        </div>
-
-        <div className='slider'>
-          
-          <div className='slider-header max-tokens'>
-            <span>Max Tokens :</span>
-            <input type="number" step="1" min="1" max="2000"
-              value={maxTokens}
-              onChange={(e) => {
-                if (e.target.value >= 2000) e.target.value = 2000
-                if (e.target.value <= 1) e.target.value = 1
-                setMaxTokens(parseInt(e.target.value))
-              }}>
-            </input>
-
-            <div className='tooltip'>
-              <FontAwesomeIcon icon={faCircleQuestion} />
-              <span className='tooltipText'>Set the maximum number of tokens to generate in the response.</span>
-            </div>
-          </div>
-
-          <div className="slider-body">           
-              <input type="range" step="1" min="1" max="2000"
-                className="slider-bar"
-                value={maxTokens}
-                onChange={(e) => setMaxTokens(parseInt(e.target.value))}>
-              </input>
-          </div>
-
+        <div className='hook-sliders'>
+          <HookSlider label="max tokens" description="The amount of maximum tokens allowed for the response" 
+          state={maxTokens} setState={setMaxTokens} step="1" min="1" max="200" />
+          <HookSlider label="temperature" description="Determines the response creativity value"
+          state={temperature} setState={setTemperature} step="0.01" min="0" max="2" />
+          <HookSlider label="presence penalty" description="Higher value means more likely to talk about new topics"
+          state={presencePenalty} setState={setPresencePenalty} step="0.1" min="-2" max="2" />
+          <HookSlider label="frequency penalty" description="Higher value means less likely to repeat the same text"
+          state={frequencyPenalty} setState={setFrequencyPenalty} step="0.1" min="-2" max="2" />
         </div>
 
       </aside>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClipboard, faCheck, faQuestion, faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
+import { faClipboard, faCircleQuestion, faCheck, faQuestion, faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { Tooltip } from 'react-tooltip'
@@ -86,10 +86,9 @@ function HookSlider({label, description, state, setState, step, min, max}) {
     return (
         <div className="slider">
             <div className="slider-header">
-                <span data-tooltip-id='description-tooltip' data-tooltip-content={description} style={description ? {cursor: 'help'} : {}}>
+                <span data-tooltip-id='description-tooltip' data-tooltip-content={description}>
                   {`${label ? label.charAt(0).toUpperCase() + label.slice(1) : "?"} :`}
                 </span>
-                {description && <Tooltip id='description-tooltip' />}
                 <input type="number" step={step} min={min} max={max}
                     value={state}
                     onChange={(e) => {
@@ -98,6 +97,10 @@ function HookSlider({label, description, state, setState, step, min, max}) {
                         if (setState) setState(e.target.value)
                     }}>
                 </input>
+                {description && <div className='tooltip'>
+                  <FontAwesomeIcon icon={faCircleQuestion} />
+                  <span className='tooltipText'>{description}</span>
+                </div>}
             </div>
             <div className="slider-body">
                 <input type="range" step={step} min={min} max={max}

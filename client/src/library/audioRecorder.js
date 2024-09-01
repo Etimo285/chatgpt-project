@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
 
-function AudioRecorder({ onTranscription }) {
+function AudioRecorder({ onTranscription, selectedLang }) {
     const [recorder, setRecorder] = useState(null);
     const [stream, setStream] = useState(null);
     const [isRecording, setIsRecording] = useState(false)
@@ -28,6 +28,7 @@ function AudioRecorder({ onTranscription }) {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                     const formData = new FormData();
                     formData.append('audio', audioBlob, 'audio.webm');
+                    formData.append('lang', JSON.stringify(selectedLang))
                     console.log(formData);
 
                     try {

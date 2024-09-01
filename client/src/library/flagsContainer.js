@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 
 const Langs = require('../langs.json')
 
-function FlagsContainer() {
+function FlagsContainer({ handleSelectLang, selectedLang }) {
     const [hidden, setHidden] = useState(true)
-    const [selectedLang, setSelectedLang] = useState({flag: null, label: "Select a langage"})
 
-    const handleLangSelection = (lang) => {
-        setSelectedLang({flag: lang.flag, label: lang.name})
+    const handleLangClick = (lang) => {
+        handleSelectLang(lang)
         setHidden(true)
     }
 
@@ -18,10 +17,10 @@ function FlagsContainer() {
                     {selectedLang.flag && <img
                         src={selectedLang.flag}
                         width="30"
-                        alt={selectedLang.label}
+                        alt={selectedLang.name}
                     />}
                     <div>
-                        {selectedLang.label}
+                        {selectedLang.name}
                     </div>
                 </div>
             </div>
@@ -32,7 +31,7 @@ function FlagsContainer() {
                         <div className={`${hidden ? 'hidden' : 'visible'}`}
                                 value=""
                                 key={key}
-                                onClick={() => handleLangSelection(lang)}
+                                onClick={() => handleLangClick(lang)}
                         >
                             <div>
                                 <img

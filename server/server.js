@@ -39,11 +39,8 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
         const response = await openai.audio.transcriptions.create({
             model: "whisper-1",
             file: audioFile,
-            language: "de",
+            language: JSON.parse(req.body.lang).promptInfo.codeIso,
         });
-
-        // Supprime le fichier après traitement
-        fs.unlinkSync(req.file.path);
 
         res.json({
             text: response.text,
@@ -52,6 +49,8 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Failed to transcribe audio' });
     }
+    // Supprime le fichier après traitement
+    fs.unlinkSync(req.file.path);
 });
 app.post('/', async (req, res) => {
 

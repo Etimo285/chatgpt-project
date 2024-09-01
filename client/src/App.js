@@ -40,6 +40,11 @@ function App() {
     console.log(text)
     setTranscription(text);
   };
+  const [selectedLang, setSelectedLang] = useState({flag: null, label: "Select a langage"})
+
+  const handleSelectLang = (lang) => {
+    setSelectedLang(lang)
+  }
 
   useEffect(()=>{
     setInput(transcription)
@@ -130,7 +135,7 @@ function App() {
           state={maxTokens} setState={setMaxTokens} step="1" min="1" max="200" />
         </div>
 
-        <FlagsContainer />
+        <FlagsContainer handleSelectLang={handleSelectLang} selectedLang={selectedLang}/>
 
       </aside>
 
@@ -186,7 +191,7 @@ function App() {
         <div className='chat-input-box'>
           <form onSubmit={handleSubmit} className='chat-form'>
             <input  value={input} className='chat-input' onChange={(e)=> setInput(e.target.value)}></input>
-            <AudioRecorder onTranscription={handleTranscription}/>
+            <AudioRecorder onTranscription={handleTranscription} selectedLang={selectedLang}/>
           </form>
           
         </div>

@@ -33,6 +33,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 app.post('/transcribe', upload.single('audio'), async (req, res) => {
+    console.log(req.body?.lang)
     try {
         const audioFile = fs.createReadStream(req.file.path);
         

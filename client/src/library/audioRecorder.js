@@ -65,8 +65,8 @@ function AudioRecorder({ onTranscription }) {
     }
 
     return (
-        <div className='align-center'>
-            <FontAwesomeIcon className='record_button' icon={isRecording? faMicrophoneSlash : faMicrophone} onClick={toggleRecord}/>
+        <div className={`align-center record_button_container ${isRecording? "isRecording" : ""}`} onClick={toggleRecord}>
+            <FontAwesomeIcon className="record_button" icon={faMicrophone} />
         </div>
     );
 }

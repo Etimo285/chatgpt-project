@@ -80,25 +80,21 @@ app.post('/', async (req, res) => {
         })
         console.log(response.choices[0].message.content)
     } catch(e) { console.log(e) }
-
     
-
     const speechFile = path.resolve("../client/speech.mp3");
     const input = response.choices[0].message.content;
     const matches = input.match(/<DE>(.*?)<\/DE>/g);
 
-
-    const wordsBetweenTags = matches.map(match => match.replace(/<\/?DE>/g, ""));
+    const wordsBetweenTags = matches?.map(match => match.replace(/<\/?DE>/g, ""));
     console.log(wordsBetweenTags); // Cela affichera un tableau avec les mots entre balises <DE>
     
     const mp3 = await openai.audio.speech.create({
         model: "tts-1",
         voice: "echo",
-        input: wordsBetweenTags.join(" "),
+        input: wordsBetweenTags ? wordsBetweenTags.join(" ") : input,
       });
 
     const buffer = Buffer.from(await mp3.arrayBuffer());
-
     
     try {
     await fs.promises.writeFile(speechFile, buffer)

@@ -127,9 +127,9 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--app-orange);
-  height: 45px;
-  width: 45px;
+  background: var(--app-orange);
+  height: 70px;
+  width: 70px;
   min-width: 45px;
   margin-left: 30px;
   margin-top: 5px;
@@ -139,6 +139,11 @@ code {
 
 .avatar.chatGPT{
   background-color: var(--app-green);
+}
+
+.avatar.false{
+  background-image: url("./images/shrek.jpg");
+  background-size: cover;
 }
 
 .avatar.system {
@@ -169,7 +174,7 @@ code {
   background-color: var(--app-light-grey);
   border: none;
   outline: none;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   width: 95%;
 
 }
@@ -425,7 +430,27 @@ code {
   align-items: center;
 }
 
+.record_button_container{
+  padding: 15px;
+  border: white 2px solid;
+  border-radius: 50%;
+  height: 15px;
+  width: 15px;
+  background: var(--app-dark-grey);
+  cursor: pointer;
+  transition: background-color 0.3s linear;
+
+}
+
 .record_button{
   height: 1.5rem;
-  cursor: pointer;
+}
+
+
+.record_button_container.isRecording{
+  background-color: var(--app-orange);
+}
+
+.record_button_container:hover{
+  background-color: var(--app-orange);
 }

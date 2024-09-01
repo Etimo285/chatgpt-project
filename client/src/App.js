@@ -2,11 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { ChatMessage, TokenPrice, HookSlider } from './library/components'
 import './library/functions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClipboard, faCircleQuestion, faCheck, faQuestion, faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons'
-import ReactMarkdown from 'react-markdown'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { Tooltip } from 'react-tooltip'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
 import AudioRecorder from './library/audioRecorder'
 
@@ -23,7 +19,6 @@ function App() {
   }
   const [input, setInput] = useState("")
   const [contextPrompt, setContextPrompt] = useState("")
-  //const [vocalInput, setVocalInput] = useState({ isActive: false, icon: faMicrophoneSlash })
   const [chatLog, setChatLog] = useState([{ role: "system", content: "" }])
   const [currentPrice,  setCurrentPrice] = useState({
     priceType: "current", prices:

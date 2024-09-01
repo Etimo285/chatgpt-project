@@ -34,7 +34,7 @@ function FlagsContainer() {
                 {Object.entries(Langs).map((value, key) => {
                     const lang = value[1]
                     return (
-                        <option className={`${hidden ? 'hidden' : 'visible'}`}
+                        <div className={`${hidden ? 'hidden' : 'visible'}`}
                                 value=""
                                 key={key}
                                 onClick={() => handleLangSelection(lang)}
@@ -49,7 +49,7 @@ function FlagsContainer() {
                                     {lang.name}
                                 </div>
                             </div>
-                        </option>
+                        </div>
                     )
                 })}
             </div>

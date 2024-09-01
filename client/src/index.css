@@ -59,13 +59,14 @@ code {
 
 
 
-.langs-options > option{
+.langs-options > div{
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, var(--app-light-grey) 25%, var(--app-light-grey) 75%, rgba(255, 255, 255, 0.6) 100%);
   height: 2.5rem;
   color: var(--app-dark);
   /* border-bottom: var(--app-dark-grey) 1px solid; */
   cursor: pointer;
   padding: 0.5rem;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,7 +74,7 @@ code {
   opacity: 0.85;
 }
 
-.langs-options > option::after{
+.langs-options > div::after{
   content: "";
   position: absolute;
   bottom: 0;
@@ -82,22 +83,22 @@ code {
   background-color: var(--app-dark-grey);
 }
 
-.langs-options > option:nth-last-child(1)::after{
+.langs-options > div:nth-last-child(1)::after{
   content: none;
 }
 
-.langs-options > option:hover{
+.langs-options > div:hover{
   opacity: 1;
 }
 
-.langs-options > option > div, .selected-lang{
+.langs-options > div > div, .selected-lang{
   width: 50%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.langs-options > option > div > div{
+.langs-options > div > div > div{
   width: 50%;
   text-align: start;
 }
@@ -263,7 +264,7 @@ code {
   background-color: var(--app-green);
 }
 
-.models-selector option {
+.models-selector div {
   border: none;
 }
 
@@ -438,7 +439,7 @@ code {
 }
 
 .slider .tooltip .tooltipText::after {
-  content: " ";
+  content: "";
   position: absolute;
   top: 50%;
   right: 100%; 
@@ -500,22 +501,20 @@ code {
   align-items: center;
 }
 
-<<<<<<< HEAD
 .justify-center{
   display: flex;
   justify-content: center;
-=======
+}
 .record_button_container{
   padding: 15px;
   border: white 2px solid;
   border-radius: 50%;
-  height: 15px;
-  width: 15px;
+  height: 50px;
+  width: 50px;
   background: var(--app-dark-grey);
   cursor: pointer;
   transition: background-color 0.3s linear;
 
->>>>>>> bc512c3941560dd45867988208f097ac5804e180
 }
 
 .record_button{

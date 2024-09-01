@@ -39,7 +39,7 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
         const response = await openai.audio.transcriptions.create({
             model: "whisper-1",
             file: audioFile,
-            language: "ja",
+            language: "de",
         });
 
         // Supprime le fichier après traitement

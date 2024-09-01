@@ -66,6 +66,7 @@ code {
   /* border-bottom: var(--app-dark-grey) 1px solid; */
   cursor: pointer;
   padding: 0.5rem;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -263,7 +264,7 @@ code {
   background-color: var(--app-green);
 }
 
-.models-selector option {
+.models-selector div {
   border: none;
 }
 
@@ -438,7 +439,7 @@ code {
 }
 
 .slider .tooltip .tooltipText::after {
-  content: " ";
+  content: "";
   position: absolute;
   top: 50%;
   right: 100%; 
@@ -509,12 +510,11 @@ code {
   padding: 15px;
   border: white 2px solid;
   border-radius: 50%;
-  height: 15px;
-  width: 15px;
+  height: 50px;
+  width: 50px;
   background: var(--app-dark-grey);
   cursor: pointer;
   transition: background-color 0.3s linear;
-
 }
 
 .record_button{

@@ -21,10 +21,9 @@ function ChatMessage({message}){
             </svg>}
           </div>
           <div className='message'>
-              {message.isWaiting && <div className='dot-typing'>
-          </div>}
-          <div children={message.content}
-          />
+            {message.isWaiting && <div className='dot-typing'></div>}
+            <div children={message.content?.match(/<DE>(.*?)<\/DE>/g) ? message.content.replaceAll('</DE>', '🇩🇪').replaceAll('<DE>', '🇩🇪') : message.content}>
+            </div>
           </div>
         </div>
       )

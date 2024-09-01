@@ -1,0 +1,27 @@
+{
+    "french": {
+        "name": "Francais",
+        "promptInfo": {
+            "determinant": "de",
+            "codeIso": "fr"
+        },
+        "flag": "https://flagcdn.com/fr.svg"
+    },
+
+    "german": {
+        "name": "Allemand",
+        "promptInfo": {
+            "determinant": "d'",
+            "codeIso": "de"
+        },
+        "flag": "https://flagcdn.com/de.svg"
+    },
+    "japanese": {
+        "name": "Japonais",
+        "promptInfo": {
+            "determinant": "de",
+            "codeIso": "ja"
+        },
+        "flag": "https://flagcdn.com/jp.svg"
+    }
+}

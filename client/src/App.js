@@ -9,8 +9,11 @@ import { Tooltip } from 'react-tooltip'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import './index.css'
 import AudioRecorder from './library/audioRecorder'
+import FlagsContainer from './library/flagsContainer'
 
 function App() {
+
+  console.log("jaaj")
 
   const [model, setModel] = useState("gpt-4o-mini")
   const modelPriceRatio = {
@@ -132,8 +135,9 @@ function App() {
         <div className='hook-sliders'>
           <HookSlider label="max tokens" description="The amount of maximum tokens allowed for the response" 
           state={maxTokens} setState={setMaxTokens} step="1" min="1" max="200" />
-
         </div>
+
+        <FlagsContainer />
 
       </aside>
 

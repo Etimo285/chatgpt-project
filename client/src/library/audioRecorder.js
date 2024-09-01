@@ -9,7 +9,7 @@ function AudioRecorder({ onTranscription }) {
 
     const recording = async () => {
 
-        let audioChunks = []; 
+        let audioChunks = [];
     
         try {
             const stream_ = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -20,11 +20,15 @@ function AudioRecorder({ onTranscription }) {
                 audioChunks.push(event.data);
             };
 
+            console.log(MediaRecorder.isTypeSupported('audio/webm'));
+            console.log(MediaRecorder.isTypeSupported('audio/wav'))
+
             mediaRecorder.onstop = async () => {
                 if (audioChunks.length > 0) {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                     const formData = new FormData();
                     formData.append('audio', audioBlob, 'audio.webm');
+                    console.log(formData);
 
                     try {
                         const response = await fetch('http://localhost:4080/transcribe', {
@@ -55,7 +59,7 @@ function AudioRecorder({ onTranscription }) {
         }
     };
 
-    const toggleRecord = ()=>{
+    const toggleRecord = () => {
         if(!isRecording){
             recording()
         }else if(isRecording){

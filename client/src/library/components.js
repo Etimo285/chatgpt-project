@@ -25,7 +25,7 @@ function ChatMessage({message}){
             </svg>}
           </div>
           <div className='message'>
-          {message.isWaiting && <div className='dot-typing'></div>}
+            {message.isWaiting && <div className='dot-typing'></div>}
           <ReactMarkdown children={message.content}
           components={{
             code({node, inline, className, children, ...props}) {

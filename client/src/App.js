@@ -9,8 +9,6 @@ import FlagsContainer from './library/flagsContainer'
 
 function App() {
 
-  console.log("jaaj")
-
   const [model, setModel] = useState("gpt-4o-mini")
   const modelPriceRatio = {
     gpt3_5:

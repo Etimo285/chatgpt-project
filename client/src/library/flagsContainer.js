@@ -6,11 +6,6 @@ function FlagsContainer() {
     const [hidden, setHidden] = useState(true)
     const [selectedLang, setSelectedLang] = useState({flag: null, label: "Select a langage"})
 
-    Object.entries(Langs).forEach(lang => {
-        console.log(lang)
-    });
-    console.log(Object.entries(Langs))
-
     const handleLangSelection = (lang) => {
         setSelectedLang({flag: lang.flag, label: lang.name})
         setHidden(true)

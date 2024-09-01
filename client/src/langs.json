@@ -16,6 +16,22 @@
         },
         "flag": "https://flagcdn.com/de.svg"
     },
+    "italian": {
+        "name": "Italien",
+        "promptInfo": {
+            "determinant": "d'",
+            "codeIso": "it"
+        },
+        "flag": "https://flagcdn.com/it.svg"
+    },
+    "spanish": {
+        "name": "Espagnol",
+        "promptInfo": {
+            "determinant": "d'",
+            "codeIso": "es"
+        },
+        "flag": "https://flagcdn.com/es.svg"
+    },
     "japanese": {
         "name": "Japonais",
         "promptInfo": {
@@ -23,5 +39,21 @@
             "codeIso": "ja"
         },
         "flag": "https://flagcdn.com/jp.svg"
+    },
+    "russian": {
+        "name": "Russe",
+        "promptInfo": {
+            "determinant": "de",
+            "codeIso": "ru"
+        },
+        "flag": "https://flagcdn.com/ru.svg"
+    },
+    "chinese": {
+        "name": "Chinois",
+        "promptInfo": {
+            "determinant": "de",
+            "codeIso": "zh"
+        },
+        "flag": "https://flagcdn.com/cn.svg"
     }
 }

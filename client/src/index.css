@@ -500,11 +500,11 @@ code {
   align-items: center;
 }
 
-<<<<<<< HEAD
 .justify-center{
   display: flex;
   justify-content: center;
-=======
+}
+
 .record_button_container{
   padding: 15px;
   border: white 2px solid;
@@ -515,7 +515,6 @@ code {
   cursor: pointer;
   transition: background-color 0.3s linear;
 
->>>>>>> bc512c3941560dd45867988208f097ac5804e180
 }
 
 .record_button{

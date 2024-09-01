@@ -2,23 +2,60 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const path = require("path")
+const fs = require("fs")
+const multer = require('multer')
 
 const app = express()
 app.use(bodyParser.json())
 app.use(cors())
 
-const { Configuration, OpenAIApi } = require("openai")
-const port = 3080
+const OpenAI = require("openai")
+const port = 4080
 
-const configuration = new Configuration({
+const configuration = {
     organization: process.env.OPENAI_ORG,
+    project: process.env.PROJECT_ID,
     apiKey: process.env.OPENAI_API_KEY,
-})
-const openai = new OpenAIApi(configuration)
+}
+const openai = new OpenAI(configuration)
+app.get('/speech.mp3', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/speech.mp3'));
+});
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + ".webm");
+    }
+});
 
+const upload = multer({ storage: storage });
+app.post('/transcribe', upload.single('audio'), async (req, res) => {
+    try {
+        const audioFile = fs.createReadStream(req.file.path);
+        
+        const response = await openai.audio.transcriptions.create({
+            model: "whisper-1",
+            file: audioFile,
+            language: "de",
+        });
+
+        // Supprime le fichier après traitement
+        fs.unlinkSync(req.file.path);
+
+        res.json({
+            text: response.text,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to transcribe audio' });
+    }
+});
 app.post('/', async (req, res) => {
 
-    const { messages, model, maxTokens, temperature, presencePenalty, frequencyPenalty } = req.body
+    const { messages, model, maxTokens } = req.body
 
     let response
     let errMessage
@@ -30,39 +67,51 @@ app.post('/', async (req, res) => {
         console.log(`User Input : ${messages[messages.length-1].content} (${typeof(messages[messages.length-1].content)})`)
         console.log(`Model : ${model} (${typeof(model)})`)
         console.log(`MaxTokens : ${maxTokens} (${typeof(maxTokens)})`)
-        console.log(`Temperature : ${temperature} (${typeof(temperature)})`)
-        console.log(`PresencePenalty : ${presencePenalty} (${typeof(presencePenalty)})`)
-        console.log(`FrequencyPenalty : ${frequencyPenalty} (${typeof(frequencyPenalty)})`)
     }
 
     // Uncomment the next line to test Input values
     // logInputValues()
 
-    if (model.includes("3.5")) {
-        response = await openai.createChatCompletion({
-            model: model,
-            messages: messages,
-            max_tokens: parseInt(maxTokens),
-            temperature: parseFloat(temperature),
-            presence_penalty: parseFloat(presencePenalty),
-            frequency_penalty: parseFloat(frequencyPenalty)
-        }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
-    } else {
-        response = await openai.createCompletion({
-            model: model,
-            prompt: messages[messages.length-1].content,
-            max_tokens: parseInt(maxTokens),
-            temperature: parseFloat(temperature),
-        }).catch((e) => { errMessage = e.message ; console.log(errMessage) })
-    }  
+    try {
+        response = await openai.chat.completions.create({
+        model: model,
+        messages: messages,
+        /*max_tokens: parseInt(maxTokens)*/
+        })
+        console.log(response.choices[0].message.content)
+    } catch(e) { console.log(e) }
 
+    
+
+    const speechFile = path.resolve("../client/speech.mp3");
+    const input = response.choices[0].message.content;
+    const matches = input.match(/<DE>(.*?)<\/DE>/g);
+
+
+    const wordsBetweenTags = matches.map(match => match.replace(/<\/?DE>/g, ""));
+    console.log(wordsBetweenTags); // Cela affichera un tableau avec les mots entre balises <DE>
+    
+    const mp3 = await openai.audio.speech.create({
+        model: "tts-1",
+        voice: "echo",
+        input: wordsBetweenTags.join(" "),
+      });
+
+    const buffer = Buffer.from(await mp3.arrayBuffer());
+
+    
+    try {
+    await fs.promises.writeFile(speechFile, buffer)
     res.json({
-        GPTresponse: model.includes("3.5") ?
-            response.data.choices[0].message.content :
-            response.data.choices[0].text,
+        GPTresponse: response.choices[0].message.content,
         ErrorResponse: errMessage,
-        Price: response.data.usage,
+        Price: response.usage,
+        audioUrl: "/speech.mp3",
     })
+    } catch (error) {
+        console.log(error)
+    }
+
 })
 
 app.listen(port, () => {

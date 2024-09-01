@@ -86,21 +86,23 @@ function HookSlider({label, description, state, setState, step, min, max}) {
     return (
         <div className="slider">
             <div className="slider-header">
-                <span data-tooltip-id='description-tooltip' data-tooltip-content={description}>
+                <span>
                   {`${label ? label.charAt(0).toUpperCase() + label.slice(1) : "?"} :`}
                 </span>
-                <input type="number" step={step} min={min} max={max}
-                    value={state}
-                    onChange={(e) => {
-                        if (e.target.value >= max) e.target.value = max
-                        if (e.target.value <= min) e.target.value = min
-                        if (setState) setState(e.target.value)
-                    }}>
-                </input>
-                {description && <div className='tooltip'>
-                  <FontAwesomeIcon icon={faCircleQuestion} />
-                  <span className='tooltipText'>{description}</span>
-                </div>}
+                <div>
+                  <input type="number" step={step} min={min} max={max}
+                      value={state}
+                      onChange={(e) => {
+                          if (e.target.value >= max) e.target.value = max
+                          if (e.target.value <= min) e.target.value = min
+                          if (setState) setState(e.target.value)
+                      }}>
+                  </input>
+                  {description && <div className='tooltip'>
+                    <FontAwesomeIcon icon={faCircleQuestion} />
+                    <span className='tooltipText'>{description}</span>
+                  </div>}
+                </div>
             </div>
             <div className="slider-body">
                 <input type="range" step={step} min={min} max={max}

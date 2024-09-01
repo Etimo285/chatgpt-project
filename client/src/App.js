@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ChatMessage, TokenPrice, HookSlider } from './library/components'
 import './library/functions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,11 +7,12 @@ import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { Tooltip } from 'react-tooltip'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import './App.css'
+import './index.css'
+import AudioRecorder from './library/audioRecorder'
 
 function App() {
 
-  const [model, setModel] = useState("gpt-3.5-turbo")
+  const [model, setModel] = useState("gpt-4o-mini")
   const modelPriceRatio = {
     gpt3_5:
       {ratio: 0.002},
@@ -37,9 +38,20 @@ function App() {
       {numberType: "total" ,value: 0}]
   })
   const [maxTokens, setMaxTokens] = useState(100)
-  const [temperature, setTemperature] = useState(1)
-  const [presencePenalty, setPresencePenalty] = useState(0)
-  const [frequencyPenalty, setFrequencyPenalty] = useState(0)
+  const messagesEndRef = useRef(null);
+  const [transcription, setTranscription] = useState('');
+  const handleTranscription = (text) => {
+    console.log(text)
+    setTranscription(text);
+  };
+
+  useEffect(()=>{
+    setInput(transcription)
+  },[transcription])
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }
 
   useEffect(() => {
     setTotalPrice({
@@ -51,6 +63,9 @@ function App() {
         ]
     })
   }, [currentPrice]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatLog]);
 
   async function handleSubmit(e){
 
@@ -59,7 +74,7 @@ function App() {
     setInput("")
     setChatLog(chatLogRefresh)
 
-    const response = await fetch("http://localhost:3080/", {
+    const response = await fetch("http://localhost:4080/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -67,14 +82,20 @@ function App() {
       body: JSON.stringify({
         messages: chatLogRefresh,
         model: model,
-        maxTokens: maxTokens,
-        temperature: temperature,
-        presencePenalty: presencePenalty,
-        frequencyPenalty: frequencyPenalty
+        maxTokens: maxTokens
       })
     }).then(setChatLog([...chatLogRefresh, { role: "assistant", isWaiting: true } ]))
 
     const data = await response.json()
+    console.log(data.GPTresponse)
+    const audioRes = await fetch(`http://localhost:4080${data.audioUrl}`, {
+      method: "GET"
+    })
+
+    const audioBlob = await audioRes.blob(); // Get the audio as a blob
+    const audioUrl = URL.createObjectURL(audioBlob); // Create a URL for the blob
+    const audio = new Audio(audioUrl); // Create a new Audio object
+    audio.play(); // Play the audio
 
     setCurrentPrice({
       priceType: "current", prices: 
@@ -93,9 +114,10 @@ function App() {
       <aside className='aside'>
 
         <div className='models-list'>
-          <select className='models-selector' defaultValue="gpt-3.5-turbo" onChange={(e) => {
+          <select className='models-selector' defaultValue="gpt-4o-mini" onChange={(e) => {
             setModel(e.target.value)
             }}>
+            <option value="gpt-4o-mini">gpt-4o-mini</option>
             <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
             <option value="code-davinci-002">code-davinci-002</option>
             <option value="ada">ada</option>
@@ -110,12 +132,7 @@ function App() {
         <div className='hook-sliders'>
           <HookSlider label="max tokens" description="The amount of maximum tokens allowed for the response" 
           state={maxTokens} setState={setMaxTokens} step="1" min="1" max="200" />
-          <HookSlider label="temperature" description="Determines the response creativity value"
-          state={temperature} setState={setTemperature} step="0.01" min="0" max="2" />
-          <HookSlider label="presence penalty" description="Higher value means more likely to talk about new topics"
-          state={presencePenalty} setState={setPresencePenalty} step="0.1" min="-2" max="2" />
-          <HookSlider label="frequency penalty" description="Higher value means less likely to repeat the same text"
-          state={frequencyPenalty} setState={setFrequencyPenalty} step="0.1" min="-2" max="2" />
+
         </div>
 
       </aside>
@@ -128,7 +145,7 @@ function App() {
             <h1>Chat</h1>
             
             <div className='contextCheckbox'>
-              <input type="checkbox" id="context" name="context" onClick={(e)=> document. querySelector(".context").classList.toggle("true")}>
+              <input type="checkbox" id="context" name="context" onClick={(e)=> document.querySelector(".context").classList.toggle("true")}>
               </input><label for="context">Context Prompt</label>
 
               <div className='tooltip'>
@@ -159,18 +176,22 @@ function App() {
        
         <div className='chatLog'>      
 
-          <ChatMessage message={{ role: 'assistant', content: 'Hello, how can I help you today ?' }} />
+          <ChatMessage message={{ role: 'assistant', content: 'Bonjour, comment puis-je vous aider ?' }} />
         
           {chatLog.filter((msg) => msg.role === "assistant" || msg.role === "user").map((message, index) => (
             <ChatMessage key={index} message={message} />
           ))}
 
+          <div ref={messagesEndRef} />
+
         </div>
         
         <div className='chat-input-box'>
-          <form onSubmit={handleSubmit}>
-            <input className='chat-input' value={input} onChange={(e)=> setInput(e.target.value)}></input>
+          <form onSubmit={handleSubmit} className='chat-form'>
+            <input  value={input} className='chat-input' onChange={(e)=> setInput(e.target.value)}></input>
+            <AudioRecorder onTranscription={handleTranscription}/>
           </form>
+          
         </div>
       </section>
     </div>

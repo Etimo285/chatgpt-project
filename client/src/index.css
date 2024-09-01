@@ -97,67 +97,6 @@ code {
   outline: none;
 }
 
-.tooltip{
-  margin-left: 5px;
-  position: relative;
-}
-
-.tooltip:hover .tooltipText{
-  visibility: visible;
-}
-
-.contextCheckbox .tooltipText {
-  visibility: hidden;
-  position: absolute;
-  z-index: 1;
-  margin-top: -5px;
-  left: 150%;
-  width: 300px;
-  
-  background-color: var(--app-dark);
-  text-align: center;
-  padding: 5px 5px;
-  border-radius: 6px;
-  text-align: left;
-}
-
-.slider .tooltipText{
-  visibility: hidden;
-  position: absolute;
-  z-index: 1;
-  margin-top: -5px;
-  left: 150%;
-  width: 300px;
-  
-  background-color: var(--app-light-grey);
-  color: var(--app-dark);
-  text-align: center;
-  padding: 5px 5px;
-  border-radius: 6px;
-  text-align: left;
-}
-
-.slider .tooltip .tooltipText::after {
-  content: " ";
-  position: absolute;
-  top: 32%;
-  right: 100%; 
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent var(--app-light-grey) transparent transparent;
-}
-
-.tooltip .tooltipText::after {
-  content: " ";
-  position: absolute;
-  top: 15%;
-  right: 100%; 
-  margin-top: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent var(--app-dark) transparent transparent;
-}
-
 .chatBox{
   flex: 1;
   display: flex;
@@ -217,15 +156,22 @@ code {
   padding: 12px;
 }
 
-.chat-input{
-  border: none;
-  border-radius: 10px;
-  outline: none;
-  font-size: 1.2rem;
+.chat-form{
   background-color: var(--app-light-grey);
   padding: 15px;
-  width: 95%;
   box-shadow: 5px 5px 10px var(--app-dark);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.chat-input{
+  background-color: var(--app-light-grey);
+  border: none;
+  outline: none;
+  font-size: 1.2rem;
+  width: 95%;
+
 }
 
 /* Models Selector */
@@ -302,26 +248,23 @@ code {
 .slider {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   margin-top: 15px;
 }
 
-.temperature-slider, .max-tokens-slider {
-  margin-top: 10px;
-  width: 100%;
+.slider-header div{
+  display: flex;
+  align-items: center;
 }
 
-.temperature-header>input, .max-tokens-header>input {
+.slider-header input{
+  margin-left: 5px;
   width: 2rem;
-  margin-left: 10px;
-  -moz-appearance: textfield;
-  appearance: textfield;
   text-align: center;
 }
 
-.slider-header>input::-webkit-inner-spin-button,
-.slider-header>input::-webkit-outer-spin-button
+.slider-header div input::-webkit-inner-spin-button,
+.slider-header div input::-webkit-outer-spin-button
 {
   -webkit-appearance: none;
   margin: 0;
@@ -369,6 +312,77 @@ code {
   cursor: pointer;
 }
 
+.slider-header{
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/* Tooltips */
+
+.tooltip{
+  margin-left: 10px;
+  position: relative;
+}
+
+.tooltip:hover .tooltipText{
+  visibility: visible;
+}
+
+.contextCheckbox .tooltipText {
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+  margin-top: -5px;
+  left: 150%;
+  width: 300px;
+  
+  background-color: var(--app-dark);
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 6px;
+  text-align: left;
+}
+
+.slider .tooltipText{
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+  margin-top: -5px;
+  left: 150%;
+  width: 300px;
+  
+  background-color: var(--app-light-grey);
+  color: var(--app-dark);
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 6px;
+  text-align: left;
+}
+
+.slider .tooltip .tooltipText::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  right: 100%; 
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent var(--app-light-grey) transparent transparent;
+}
+
+.tooltip .tooltipText::after {
+  content: " ";
+  position: absolute;
+  top: 15%;
+  right: 100%; 
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent var(--app-dark) transparent transparent;
+}
+
 /* Context Prompt Textarea */
 
 
@@ -406,8 +420,12 @@ code {
   cursor: pointer;
 }
 
-/* Tooltip */
+.align-center{
+  display: flex;
+  align-items: center;
+}
 
-.react-tooltip {
-  z-index: 9999;
+.record_button{
+  height: 1.5rem;
+  cursor: pointer;
 }

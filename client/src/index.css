@@ -504,6 +504,7 @@ code {
 .justify-center{
   display: flex;
   justify-content: center;
+}
 
 .record_button_container{
   padding: 15px;

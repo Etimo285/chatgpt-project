@@ -104,5 +104,5 @@ dist
 .tern-port
 
 # Useless audio files
-.speech.mp3
+.speech.mp3*
 .uploads/

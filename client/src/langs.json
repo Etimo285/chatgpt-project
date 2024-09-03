@@ -2,7 +2,7 @@
     "french": {
         "name": "Francais",
         "promptInfo": {
-            "determinant": "de",
+            "determinant": "de ",
             "codeIso": "fr",
             "emoji": "🇫🇷"
         },
@@ -39,7 +39,7 @@
     "japanese": {
         "name": "Japonais",
         "promptInfo": {
-            "determinant": "de",
+            "determinant": "de ",
             "codeIso": "ja",
             "emoji": "🇯🇵"
         },
@@ -48,7 +48,7 @@
     "russian": {
         "name": "Russe",
         "promptInfo": {
-            "determinant": "de",
+            "determinant": "de ",
             "codeIso": "ru",
             "emoji": "🇷🇺"
         },
@@ -57,7 +57,7 @@
     "chinese": {
         "name": "Chinois",
         "promptInfo": {
-            "determinant": "de",
+            "determinant": "de ",
             "codeIso": "zh",
             "emoji": "🇨🇳"
         },

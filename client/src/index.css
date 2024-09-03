@@ -41,7 +41,7 @@ code {
   background-color: var(--app-dark);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .dropdown-langs{
@@ -98,7 +98,7 @@ code {
   justify-content: space-between;
 }
 
-.langs-options > div > div > div{
+.langs-options > div > div > div, .selected-lang > div {
   width: 50%;
   text-align: start;
 }

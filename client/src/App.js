@@ -10,29 +10,9 @@ import FlagsContainer from './library/flagsContainer'
 function App() {
 
   const [model, setModel] = useState("gpt-4o-mini")
-  const modelPriceRatio = {
-    gpt3_5:
-      {ratio: 0.002},
-    ada: 
-      {ratio: 0.0004},
-    code:
-      {ratio: 0.002}
-  }
   const [input, setInput] = useState("")
   const [contextPrompt, setContextPrompt] = useState("")
   const [chatLog, setChatLog] = useState([{ role: "system", content: "" }])
-  const [currentPrice,  setCurrentPrice] = useState({
-    priceType: "current", prices:
-      [{numberType: "prompt price", value: 0}, 
-      {numberType: "response price", value: 0},
-      {numberType: "total" ,value: 0}]
-  })
-  const [totalPrice, setTotalPrice] = useState({
-    priceType: "total", prices:
-      [{numberType: "prompt price", value: 0}, 
-      {numberType: "response price", value: 0},
-      {numberType: "total" ,value: 0}]
-  })
   const [maxTokens, setMaxTokens] = useState(100)
   const messagesEndRef = useRef(null);
   const [transcription, setTranscription] = useState('');
@@ -40,10 +20,15 @@ function App() {
     console.log(text)
     setTranscription(text);
   };
-  const [selectedLang, setSelectedLang] = useState({flag: null, label: "Select a langage"})
+  const [selectedLang, setSelectedLang] = useState({flag: null, name: "Select a langage"})
+
+  const handleToggleAside = (bool) =>{
+
+  }
 
   const handleSelectLang = (lang) => {
     setSelectedLang(lang)
+    setContextPrompt(`Je veux que tu agisse comme un correcteur ${lang.promptInfo.determinant} ${lang.name}. Tu vas pointer du doigt mes erreurs en français et me donner une correction. Tu continue la conversation normalement en ${lang.name} que tu mettra dans des balises commencent et finnissant par ${"<"+lang.promptInfo.codeIso.toUpperCase()}>`)
   }
 
   useEffect(()=>{
@@ -54,16 +39,6 @@ function App() {
     messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   }
 
-  useEffect(() => {
-    setTotalPrice({
-        priceType: "total" , 
-        prices: [
-          { numberType: "prompt price", value: currentPrice.prices[0].value + totalPrice.prices[0].value },
-          { numberType: "response price", value: currentPrice.prices[1].value + totalPrice.prices[1].value },
-          { numberType: "total", value: currentPrice.prices[2].value + totalPrice.prices[2].value }
-        ]
-    })
-  }, [currentPrice]);
   useEffect(() => {
     scrollToBottom();
   }, [chatLog]);
@@ -98,14 +73,6 @@ function App() {
     const audio = new Audio(audioUrl); // Create a new Audio object
     audio.play(); // Play the audio
 
-    setCurrentPrice({
-      priceType: "current", prices: 
-        [{numberType: "prompt price", value:data.Price.prompt_tokens}, 
-        {numberType: "response price", value:data.Price.completion_tokens},
-        {numberType: "total" ,value:data.Price.total_tokens}]
-      
-      })
-
     setChatLog([...chatLogRefresh, { role: "assistant", content: `${data.GPTresponse}` }])
   }
 
@@ -113,6 +80,8 @@ function App() {
     <div className='app'>
 
       <aside className='aside'>
+
+        <div onClick={handleToggleAside}>Ouvrir</div>
 
         <div className='models-list'>
           <select className='models-selector' defaultValue="gpt-4o-mini" onChange={(e) => {
@@ -125,10 +94,7 @@ function App() {
           </select>
         </div>
         
-        <h1>Aside</h1>
-        
-        <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={currentPrice} />
-        <TokenPrice model={model} modelPriceRatio={modelPriceRatio} priceInfos={totalPrice} />
+        <h1>Options</h1>
 
         <div className='hook-sliders'>
           <HookSlider label="max tokens" description="The amount of maximum tokens allowed for the response" 
@@ -168,7 +134,7 @@ function App() {
               chatLog[0].content = contextPrompt
               console.log(contextPrompt)
               }}>
-              <input type='text' className='context-textarea'
+              <input value={contextPrompt} type='text' className='context-textarea'
                 onChange={(e) => setContextPrompt(e.target.value)}
               ></input>
             </form>

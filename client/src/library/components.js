@@ -28,20 +28,6 @@ function ChatMessage({message}){
         </div>
       )
 }
-  
-function TokenPrice({priceInfos, model, modelPriceRatio}) {
-    return (
-      <div className='tokenPrice'>
-            <div>{priceInfos.priceType === "current" ? "Current prompt price" : "Total prompts price"}</div>
-            <ul>
-              {priceInfos.prices.map((price, index)=> <li key={index}>{price.numberType} : {price.value}</li>)}
-              {model === "gpt-3.5-turbo" && <div>Dollar Price: {Math.round((priceInfos.prices[2].value*modelPriceRatio.gpt3_5.ratio/1000)*10000)/10000} $</div>}
-              {model === "ada" && <div>Dollar Price: {Math.round((priceInfos.prices[2].value*modelPriceRatio.ada.ratio/1000)*10000)/10000} $</div>}
-              {model === "code-davinci-002" && <div>Dollar Price: {Math.round((priceInfos.prices[2].value*modelPriceRatio.code.ratio/1000)*10000)/10000} $</div>}
-            </ul>
-      </div>
-    )
-}
 
 function HookSlider({label, description, state, setState, step, min, max}) {
     return (
@@ -78,4 +64,4 @@ function HookSlider({label, description, state, setState, step, min, max}) {
     )
 }
 
-export { ChatMessage, TokenPrice, HookSlider }
+export { ChatMessage, HookSlider }

@@ -28,7 +28,7 @@ function App() {
 
   const handleSelectLang = (lang) => {
     setSelectedLang(lang)
-    setContextPrompt(`Je veux que tu agisse comme un correcteur ${lang.promptInfo.determinant} ${lang.name}. Tu vas pointer du doigt mes erreurs en français et me donner une correction. Tu continue la conversation normalement en ${lang.name} que tu mettra dans des balises commencent et finnissant par ${"<"+lang.promptInfo.codeIso.toUpperCase()}>`)
+    setContextPrompt(`Je veux que tu agisses comme un correcteur ${lang.promptInfo.determinant}${lang.name}. Tu vas pointer du doigt mes erreurs en Français et me donner une correction. Tu continues la conversation normalement en ${lang.name} que tu mettras dans des balises commencant par ${"<"+lang.promptInfo.emoji}> et finissant par ${"</"+lang.promptInfo.emoji}>.`)
   }
 
   useEffect(()=>{
